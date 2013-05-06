@@ -1,0 +1,9 @@
+<Alloy>
+	<Window class="container">
+		<Label id="terms_label">Terms and Conditions</Label>
+		<Button id="accept_button" onClick="AcceptClick" title="Accept"
+			top="400" width="120" height="60" />
+		<Button id="decline_button" onClick="DeclineClick" title="Decline"
+			top="460" width="120" height="60" />
+	</Window>
+</Alloy>
