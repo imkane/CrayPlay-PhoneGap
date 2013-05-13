@@ -15,8 +15,8 @@ local.properties
 .classpath
 .settings/
 .loadpath
-bin\CrayPlay.apk
-bin.resources.ap_
+bin/CrayPlay.apk
+bin/resources.ap_
 
 # External tool builders
 .externalToolBuilders/
