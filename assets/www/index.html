@@ -10,28 +10,146 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
     <script>
+    
+    var currentQID = 0;
+    var currentQText = "";
+    var currentQRealText = "";
+    var currentRound = 1;
+    var listCreated = true;
+	var numPlayers = 2;
+	var currentPlayers = new Array();
+	
     function init(){
         document.addEventListener("deviceready", startup);
-    	$.mobile.changePage("#terms", {role: "dialog", transition: "slidedown"} );
+        var db = window.openDatabase("CrayPlay", "1.0", "Test CrayPlay DB", 1000000);
+    	db.transaction(populateDB, errorCB, successCB);
+    	$.mobile.changePage("#terms", {role: "dialog", transition: "none"} );
     }
     
     function startup(){
-    
     }
+
+    function populateDB(tx){
+         tx.executeSql('DROP TABLE IF EXISTS QUESTIONS');
+         tx.executeSql('DROP TABLE IF EXISTS PLAYERS');
+	     tx.executeSql('CREATE TABLE IF NOT EXISTS QUESTIONS (q_id INTEGER PRIMARY KEY unique, q_type INTEGER, q_text TEXT, q_realtext TEXT)');
+	     tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERS (p_id INTEGER PRIMARY KEY AUTOINCREMENT, p_name TEXT)');
+	     tx.executeSql('CREATE TABLE IF NOT EXISTS GAMES (g_id INTEGER PRIMARY KEY AUTOINCREMENT, p_winner INTEGER, played_date DATE)');
+	   	 tx.executeSql('CREATE TABLE IF NOT EXISTS ANSWERS (a_id INTEGER, g_id INTEGER, p_id INTEGER, q_id, round_id INTEGER, a_text TEXT, a_vote_count INTEGER)');
+	   	 tx.executeSql('INSERT INTO QUESTIONS (q_id, q_type, q_text, q_realtext) VALUES (1, 1, "Nipple", "The small projection of a woman\'s or girl\'s breasts in which the mammary ducts terminate and from which milk can be secreted")');
+    }
+    
+    function errorCB(err) {
+    	alert("Error processing SQL: "+err.code);
+	}
+	
+    function successCB() {
+    	//alert("success!");
+	}
+	
+    function deletePlayersDB(){
+        var db = window.openDatabase("CrayPlay", "1.0", "Test CrayPlay DB", 1000000);
+        db.transaction(deletePlayersDBCall, errorCB, successCB);
+    }   
+    
+    function deletePlayersDBCall(tx){
+    	tx.executeSql('DELETE FROM PLAYERS');
+    }
+    
+    function addPlayersDB(){
+        var db = window.openDatabase("CrayPlay", "1.0", "Test CrayPlay DB", 1000000);
+        db.transaction(addPlayersDBCall, errorCB, successCB);
+    }
+    
+    function addPlayersDBCall(tx){
+    	var setPlayerName="";
+    	var playertextbox="";
+    	alert(numPlayers);
+    	for(var i = 0; i < numPlayers; i++)
+    	{
+    		setPlayerName = document.getElementById("player"+(i+1)+"name").value;
+    		alert("player"+(i+1)+"name");
+    		//setPlayerName =  $("input#"+"player"+(i+1)+"name").val();
+    		alert(setPlayerName);
+        	tx.executeSql('INSERT INTO PLAYERS(p_name) VALUES (?)', [setPlayerName], successCB, errorCB);
+        }
+    }	
+    
+    function getPlayersDB(){
+        var db = window.openDatabase("CrayPlay", "1.0", "Test CrayPlay DB", 1000000);
+        db.transaction(getPlayersDBCall, errorCB, successCB);
+    }
+    
+    function getPlayersDBCall(tx){
+        tx.executeSql('SELECT p_id, p_name from PLAYERS', [], queryDBPlayersDBSuccess, errorCB);
+    }	
+    
+    function queryDBPlayersDBSuccess(tx, results) {
+	    //alert("inside queryDBPlayersDBSuccess");
+	    for(var i=0; i<results.rows.length;i++){
+			currentPlayers[i] = results.rows.item(i).p_name;
+	    }
+	}
+	
+	function queryDBQuestions(tx){
+        var db = window.openDatabase("CrayPlay", "1.0", "Test CrayPlay DB", 1000000);
+        db.transaction(queryDBQuestionsCall, errorCB, successCB);
+    }	
+    
+	function queryDBQuestionsCall(tx) {
+    	tx.executeSql('SELECT q_id, q_type, q_text, q_realtext FROM QUESTIONS', [], queryDBQuestionsSuccess, errorCB);
+	}
+	
+    function queryDBQuestionsSuccess(tx, results) {
+	    //alert("inside querySuccess");
+	    for(var i=0; i<results.rows.length;i++){
+	    	currentQText = results.rows.item(i).q_text;
+	    	currentQRealText = results.rows.item(i).q_realtext;
+	    	currentQID = results.rows.item(i).q_id;
+	    }
+	}
+	
     function onClick(){
-    	$.mobile.changePage("#terms", {role: "dialog", transition: "slidedown"} );
+    	$.mobile.changePage("#terms", {role: "dialog", transition: "none"} );
 	}
 	
     function onStartClick(){
-	    $.mobile.changePage("add_players.html", {transition: "slidedown"} );
+    	resetPlayers();
+	    $.mobile.changePage("add_players.html", {transition: "none"} );
 	}
 	
 	function onRulesClick(){
-	    $.mobile.changePage("#rules", {transition: "slidedown", reverse: false, changeHash: false} );
+	    $.mobile.changePage("#rules", {transition: "none", reverse: false, changeHash: false} );
 	}
 	
-	var listCreated = true;
-	var numPlayers = 2;
+	function onStartGameClick(){
+		deletePlayersDB();
+		addPlayersDB();
+		getPlayersDB();
+		queryDBQuestions();
+		$.mobile.changePage("round_one.html", {transition: "none"} );
+	}
+	
+	function resetPlayers(){
+		numPlayers = 2;
+		currentRound = 1;
+	}
+	
+	function grabCurrentPlayers(){
+	    $("#content").append("<ul id='currentplayerlist' data-role='listview' data-inset='true'></ul>");
+	    $("#content").trigger("create");
+	    
+	    for (var i = 0 ; i < currentPlayers.length; i++)
+	    {
+			$("#currentplayerlist").append("<li><label for='text-basic'>" + currentPlayers[i] + "</label>");
+			$("#content").trigger("create");
+			$("#currentplayerlist").listview("refresh");
+		}
+		
+		$("#currentplayerlist").append("<li><label for='text-basic'> " + currentQText + "</label>");
+		$("#content").trigger("create");
+		$("#currentplayerlist").listview("refresh");
+	}
 	
 	function appendToList(){
 		//Create the listview if not created
@@ -40,9 +158,18 @@
 		    listCreated = true;
 		    $("#content").trigger("create");
 		}
-		$("#list").append("<li><label for='text-basic'>Player X:</label><input name='text-basic' id='text-basic' value='' type='text'></li>");
-		$("#list").listview("refresh");
-	}
+		numPlayers += 1;
+		$("#playerlist").append("<li><label for='text-basic'>Player "+numPlayers+":</label><input name='player"+numPlayers+"' id='player"+numPlayers+"name' value='' type='text'></li>");
+		$("#content").trigger("create");
+		$("#playerlist").listview("refresh");
+    }
+    
+    function removeFromList(){
+    	$('#playerlist').children().remove('li');
+    	$("#content").trigger("create");
+    	$("#playerlist").listview("refresh");
+    	numPlayers -= 1;
+    }
     </script>
     </head>
 
@@ -56,8 +183,8 @@
     </div><!-- /header -->
     
     <div data-role="content" data-theme="e">
-     <h2>Terms & Conditions</h2>
-	 <input type="button" id="termsButton" onClick="onClick()" value="Terms">
+	     <h2>Terms & Conditions</h2>
+		 <input type="button" id="termsButton" onClick="onClick()" value="Terms">
   	</div><!-- /content -->
 	
 	<div data-role="footer" class="ui-bar" data-theme="e">
@@ -73,10 +200,10 @@
     </div><!-- /header -->
     
     <div data-role="content" data-theme="e">
-    <h2>Terms & Conditions</h2>
-	<p>This is a regular page to hold all Terms and Conditions terms</p>
-	<a href="#mainmenu" data-role="button" data-theme="c">Agree</a>  
-	<a href="#index" data-role="button" data-rel="back" data-theme="a">Disagree</a>     
+	    <h2>Terms & Conditions</h2>
+		<p>This is a regular page to hold all Terms and Conditions terms</p>
+		<a href="#mainmenu" data-role="button" data-theme="c">Agree</a>  
+		<a href="#index" data-role="button" data-rel="back" data-theme="a">Disagree</a>     
   	</div><!-- /content -->
 	
 	<div data-role="footer" class="ui-bar" data-theme="e">
@@ -92,10 +219,10 @@
     </div><!-- /header -->
     
     <div data-role="content" data-theme="e">
-    <h2>CrayPlay</h2>
-	<p>This is a regular page to hold all Terms and Conditions terms</p>
-	<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
-	<input type="button" id="rulesButton" onClick="onRulesClick()" value="Rules">   
+	    <h2>CrayPlay</h2>
+		<p>This is a regular page to hold all Terms and Conditions terms</p>
+		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
+		<input type="button" id="rulesButton" onClick="onRulesClick()" value="Rules">   
   	</div><!-- /content -->
 	
 	<div data-role="footer" class="ui-bar" data-theme="e">
@@ -113,9 +240,9 @@
     </div><!-- /header -->
     
     <div data-role="content" data-theme="e">
-    <h2>CrayPlay Rules</h2>
-	<p>Theses are the CrayPlay rules.  The game is played similarly to Cards Against Humanity...</p>
-	<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
+	    <h2>CrayPlay Rules</h2>
+		<p>Theses are the CrayPlay rules.  The game is played similarly to Cards Against Humanity...</p>
+		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
   	</div><!-- /content -->
 	
 	<div data-role="footer" class="ui-bar" data-theme="e">

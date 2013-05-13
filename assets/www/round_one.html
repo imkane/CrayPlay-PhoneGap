@@ -10,28 +10,17 @@
 	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
 
 	</head>
-<body onload="init()">
+<body onload="grabCurrentPlayers()">
 
 <div data-role="page">
 		<div data-role="header" data-theme="e">
-			<a href="index.html" data-role="button" data-rel="back" data-mini="true">Back</a></h3>
-			<h1>CrayPlay Add Players</h1>
+			<a href="add_players.html" data-role="button" data-rel="back" data-mini="true">Back</a></h3>
+			<h1>Round One</h1>
 		</div><!-- /header -->
 
 		<div data-role="content" id="content" data-theme="e">
-			<h2>Players</h2>
-			<p>Enter the names of each player in the fields below</p>
-			<div id="form">
-			<ul id="playerlist" data-role="listview" data-inset="true">
-			<li><label for="text-basic">Player 1:</label>
-			<input name="player1" id="player1name" value="dave" type="text"></li>
-			<li><label for="text-basic">Player 2:</label>
-			<input name="player2" id="player2name" value="jenny" type="text"></li>
-			</ul>
-			</div>
-			<input type="button" id="addPlayer" onClick="appendToList()" value="Add Player"/>
-			<input type="button" id="delPlayer" onClick="removeFromList()" value="Remove Player"/>
-			<input type="button" id="startGameSubmit" onClick="onStartGameClick()" value="Let's Play!"/>
+			<h2>Round One</h2>
+			<input type="button" id="grabCurrentPlayers" onClick="grabCurrentPlayers()" value="Current Players"/>
 		</div><!-- /content -->
 			
 	<div data-role="footer" class="ui-bar" data-theme="e">
