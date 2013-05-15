@@ -63,23 +63,25 @@
     
     function addPlayersDBCall(tx){
     	var setPlayerName="";
-    	var playertextbox="";
-    	alert(numPlayers);
+    	//alert(numPlayers);
     	for(var i = 0; i < numPlayers; i++)
     	{
     		setPlayerName = document.getElementById("player"+(i+1)+"name").value;
-    		alert("player"+(i+1)+"name");
-    		//setPlayerName =  $("input#"+"player"+(i+1)+"name").val();
-    		alert(setPlayerName);
-        	tx.executeSql('INSERT INTO PLAYERS(p_name) VALUES (?)', [setPlayerName], successCB, errorCB);
+        	tx.executeSql('INSERT INTO PLAYERS(p_name) VALUES (?)', [setPlayerName], addPlayersDBSuccess, errorCB);
         }
     }	
     
+    function addPlayersDBSuccess(){
+      	//alert('inside add player success db');
+      	$.mobile.changePage("round_one.html", {transition: "none"} );
+    }
     function getPlayersDB(){
         var db = window.openDatabase("CrayPlay", "1.0", "Test CrayPlay DB", 1000000);
-        db.transaction(getPlayersDBCall, errorCB, successCB);
+        db.transaction(getPlayersDBCall, errorCB, getPlayersDBsuccess);
     }
-    
+    function getPlayersDBsuccess(){
+		appendToRoundOne();
+	}
     function getPlayersDBCall(tx){
         tx.executeSql('SELECT p_id, p_name from PLAYERS', [], queryDBPlayersDBSuccess, errorCB);
     }	
@@ -125,9 +127,7 @@
 	function onStartGameClick(){
 		deletePlayersDB();
 		addPlayersDB();
-		getPlayersDB();
 		queryDBQuestions();
-		$.mobile.changePage("round_one.html", {transition: "none"} );
 	}
 	
 	function resetPlayers(){
@@ -136,7 +136,11 @@
 	}
 	
 	function grabCurrentPlayers(){
-	    $("#content").append("<ul id='currentplayerlist' data-role='listview' data-inset='true'></ul>");
+		getPlayersDB();
+	}
+	
+	function appendToRoundOne(){
+		$("#content").append("<ul id='currentplayerlist' data-role='listview' data-inset='true'></ul>");
 	    $("#content").trigger("create");
 	    
 	    for (var i = 0 ; i < currentPlayers.length; i++)
