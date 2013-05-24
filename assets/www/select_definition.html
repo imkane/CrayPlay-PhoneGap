@@ -1,0 +1,38 @@
+<!DOCTYPE HTML> 
+    <html>
+    <head>
+    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Select Def</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+    <script type="text/javascript" charset="utf-8" src="js/phonegap-1.3.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+
+	</head>
+<body>
+
+<div data-role="page" id="select_definition">
+<script>
+$('#select_definition').bind('pageshow', function(){
+	//alert("inside select_definition pageshow");
+	resetPageVariables(2);
+	grabCurrentVariables();
+});
+</script>
+		<div data-role="header" data-theme="e">
+			<a data-role="button" data-rel="back" data-mini="true">Back</a></h3>
+			<h1>Select Definition</h1>
+		</div><!-- /header -->
+
+		<div data-role="content" id="content" data-theme="e">
+			<h2>Select Definition</h2>
+			<input type="button" id="clicktoContinue" onClick="moveToNextPage()" value="Player - Click To Continue">
+		</div><!-- /content -->
+			
+	<div data-role="footer" class="ui-bar" data-theme="e">
+	</div><!-- /footer -->
+</div><!-- /page -->
+
+</body>
+</html>
