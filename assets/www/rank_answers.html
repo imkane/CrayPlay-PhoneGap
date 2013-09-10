@@ -18,6 +18,29 @@ $('#rank_answers').bind('pageshow', function(){
 	//alert("inside select_definition pageshow");
 	resetPageVariables(5);
 	grabCurrentVariables();
+	
+	$('ul')
+	.addClass('ui-corner-top')
+	.removeClass('ui-corner-all')
+	.sortable({
+		'containment': 'parent',
+		'opacity': 0.6,
+		update: function(event, ui) {
+			alert("dropped");
+		}
+	});
+		
+});
+</script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+<script>
+$(document).bind('pageinit', function() {
+$( "#sortable" ).sortable();
+$( "#sortable" ).disableSelection();
+<!-- Refresh list to the end of sort to have a correct display -->
+$( "#sortable" ).bind( "sortstop", function(event, ui) {
+  $('#sortable').listview('refresh');
+});
 });
 </script>
 		<div data-role="header" data-theme="e">
@@ -27,7 +50,15 @@ $('#rank_answers').bind('pageshow', function(){
 
 		<div data-role="content" id="content" data-theme="e">
 			<h2>Rank Answers</h2>
-			<input type="button" id="clicktoContinue" onClick="moveToNextPage()" value="Player - Click To Continue">
+		<ul data-role="listview" data-inset="true" data-theme="d" id="sortable">
+		<li data-role="list-divider">List</li>
+		<li>Item 1</li>
+		<li>Item 2</li>
+		<li>Item 3</li>
+		<li>Item 4</li>
+		<li>Item 5</li>
+		</ul>
+			<!-- <input type="button" id="clicktoContinue" onClick="moveToNextPage()" value="Player - Click To Continue"> -->
 		</div><!-- /content -->
 			
 	<div data-role="footer" class="ui-bar" data-theme="e">

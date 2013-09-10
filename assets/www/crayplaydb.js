@@ -61,7 +61,17 @@ function populateDB(tx){
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (18, 1, "Definition 18")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (19, 1, "Definition 19")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (20, 1, "Definition 20")');	 	 
-	        	 
+	 /*tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (21, 1, "Definition 21")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (22, 1, "Definition 22")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (23, 1, "Definition 23")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (24, 1, "Definition 24")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (25, 1, "Definition 25")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (26, 1, "Definition 26")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (27, 1, "Definition 27")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (28, 1, "Definition 28")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (29, 1, "Definition 29")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (30, 1, "Definition 30")'); 	 */
+	 
 	 //CREATE SETUP PARAMETERS       	 
    	 tx.executeSql('INSERT INTO SETUPPARAMS (setup_id, setup_text, setup_value) VALUES (1, "handsize", "5")');
    	 tx.executeSql('INSERT INTO SETUPPARAMS (setup_id, setup_text, setup_value) VALUES (2, "numrounds", "5")');
@@ -134,6 +144,7 @@ function selectCurrentPlayer(){
     	
     currentPlayer = currentRoundPlayers.grabNextPlayer().p_id;
     currentPlayerName = currentRoundPlayers.grabNextPlayer().p_name;
+	createNewGameDB(errorCB, moveToNextPage);
 }
 
 function queryDBQuestions(errorCallBack, successCallBack){
@@ -147,6 +158,20 @@ function queryDBQuestionsSuccess(tx, results) {
 
     for(var i=0; i<results.rows.length;i++){
     	myWords.add(results.rows.item(i).word_id, results.rows.item(i).word_type, results.rows.item(i).word_text, results.rows.item(i).word_realdef, false);
+    }
+}
+
+function queryDBDefinitions(errorCallBack, successCallBack){
+    var db = window.openDatabase("CrayPlay", "1.0", "CrayPlay DB", 1000000);
+    db.transaction(queryDBDefinitionsCall, errorCallBack, successCallBack);
+}	
+function queryDBDefinitionsCall(tx) {
+	tx.executeSql('SELECT def_id, def_type, def_text FROM DEFINITIONS', [], queryDBDefinitionsSuccess, errorCB);
+}
+function queryDBDefinitionsSuccess(tx, results) {
+
+    for(var i=0; i<results.rows.length;i++){
+    	myDefinitions.add(results.rows.item(i).def_id, results.rows.item(i).def_type, results.rows.item(i).def_text, false);
     }
 }
 
@@ -170,6 +195,34 @@ function queryNewGameDBCall(tx){
 	tx.executeSql('SELECT max(g_id) as g_id from GAMELOG LIMIT 1', [], queryNewGameDBCallSuccess, errorCB);
 }
 function queryNewGameDBCallSuccess(tx, results){
-	//alert("created game successfully");
 	currentGameID = results.rows.item(0).g_id;
+}
+
+function addPlayerAnswerDB(errorCallBack, successCallBack){
+    var db = window.openDatabase("CrayPlay", "1.0", "CrayPlay DB", 1000000);
+    db.transaction(addPlayerAnswerDBCall, errorCallBack, addPlayerAnswerDBSuccess);
+}
+function addPlayerAnswerDBCall(tx){
+	var setPlayerName="";
+	//alert(numPlayers);
+	var a_def_id = $("input:radio:checked").val();
+	tx.executeSql('INSERT INTO PLAYERANSWERS(g_id,p_id,word_id,def_id,a_vote_count,a_rank) VALUES (?,?,?,?,?,?)', [currentGameID, currentPlayer, currentQID, a_def_id, 0,0], successCB, errorCB);
+}	
+function addPlayerAnswerDBSuccess(){
+  	//alert('inside add player answer success db');
+  	getPlayerAnswerDB(errorCB,successCB); //Get the list of all players entered into the database
+}
+function getPlayerAnswerDB(errorCallBack, successCallBack){
+    var db = window.openDatabase("CrayPlay", "1.0", "CrayPlay DB", 1000000);
+    db.transaction(getPlayerAnswerDBCall, errorCallBack, successCallBack);
+}
+function getPlayerAnswerDBCall(tx){
+    tx.executeSql('SELECT def_id, p_id from PLAYERANSWERS WHERE g_id = ? and word_id = ? and p_id = ?', [currentPlayer, currentQID, currentGameID], getDBPlayerAnswerDBSuccess, errorCB);
+}	
+function getDBPlayerAnswerDBSuccess(tx, results) {
+    //alert("inside queryDBPlayersDBSuccess");
+    for(var i=0; i<results.rows.length;i++){
+		//alert(results.rows.item(i).def_id);
+		//alert(results.rows.item(i).p_id);
+    }
 }

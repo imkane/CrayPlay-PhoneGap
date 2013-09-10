@@ -112,7 +112,7 @@ var RoundPlayerCollection=function()
 				if(this.collection[key]!=undefined)
 					return undefined;
 				
-				alert(currentAllPlayers.item(key).p_name);
+				//alert(currentAllPlayers.item(key).p_name);
 				
 				this.collection[key] =	{
 						p_id: key,
@@ -238,13 +238,12 @@ var WordCollection=function()
 	 }
 }
 
-
 var DefinitionCollection=function()
 {
 	this.count=0;
 	this.collection={};
 
-	this.add=function(key, d_type, d_text)
+	this.add=function(key, d_type, d_text, u_ind)
 	{
 		if(this.collection[key]!=undefined)
 			return undefined;
@@ -252,7 +251,8 @@ var DefinitionCollection=function()
 		this.collection[key] =	{
 									def_id: key,
 									def_type: d_type,
-									def_text: d_text
+									def_text: d_text,
+									used_ind: u_ind
 								};
 		return ++this.count;
 	}
@@ -276,7 +276,7 @@ var DefinitionCollection=function()
 		{
 			if(this.collection.hasOwnProperty(key))
 			{
-				block(key, this.collection[key].def_type, this.collection[key].def_text);
+				block(key, this.collection[key].def_text, this.collection[key].used_ind);
 			}
 		}
 	 }
