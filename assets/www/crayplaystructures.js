@@ -66,7 +66,7 @@ var PlayerCollection=function()
 		{
 			if(this.collection.hasOwnProperty(key))
 			{
-				block(key, this.collection[key]);
+				block(key, this.collection[key].p_name);
 			}
 		}
 	 }
@@ -235,7 +235,7 @@ var WordCollection=function()
 				block(key, this.collection[key].word_text, this.collection[key].word_realdef, this.collection[key].used_ind);
 			}
 		}
-	 }
+	}
 }
 
 var DefinitionCollection=function()
@@ -269,7 +269,7 @@ var DefinitionCollection=function()
 	{
 	 	return this.collection[key];
 	}
-	
+
 	this.forEach=function(block)
 	{
 		for(key in this.collection) 
@@ -280,4 +280,62 @@ var DefinitionCollection=function()
 			}
 		}
 	 }
+}
+
+var PlayerAnswerCollection=function()
+{
+	this.count=0;
+	this.collection={};
+
+	this.add=function(key, w_id, p_id, r_id, g_id, d_v_count, d_rank )
+	{
+		if(this.collection[key]!=undefined)
+			return undefined;
+			
+		this.collection[key] =	{
+									def_id: key,
+									word_id: w_id,
+									player_id: p_id,
+									round_id: r_id,
+									game_id: g_id,
+									def_vote_count: d_v_count,
+									def_rank: d_rank
+								};
+		return ++this.count;
+	}
+
+	this.remove=function(key)
+	{
+		 if(this.collection[key]==undefined)
+			return undefined;
+		 delete this.collection[key];
+		 return --this.count;
+	}
+	
+	this.item=function(key)
+	{
+	 	return this.collection[key];
+	}
+	
+	this.setRank=function(key, rank)
+	{
+		if(this.collection[key]!=undefined)
+		return undefined;
+			
+	 	this.collection[key].def_rank = rank;
+		
+		return this.collection[key].def_rank;
+	}
+	
+	this.forEach=function(block)
+	{
+		for(key in this.collection) 
+		{
+			if(this.collection.hasOwnProperty(key))
+			{
+				block(key, this.collection[key].word_id, this.collection[key].player_id, this.collection[key].round_id, this.collection[key].def_vote_count, 
+				this.collection[key].def_rank);
+			}
+		}
+	}
 }

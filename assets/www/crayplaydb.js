@@ -14,7 +14,7 @@ function populateDB(tx){
      tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERS (p_id INTEGER PRIMARY KEY AUTOINCREMENT, p_name TEXT)');
      tx.executeSql('CREATE TABLE IF NOT EXISTS GAMELOG (g_id INTEGER PRIMARY KEY AUTOINCREMENT, p_winner INTEGER, played_date DATE)');
      tx.executeSql('CREATE TABLE IF NOT EXISTS GAMETRANLOG (gt_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, def_id INTEGER, def_used_ind INTEGER)');
-   	 tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERANSWERS (pa_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, word_id, round_id INTEGER, def_id INTEGER, a_vote_count INTEGER, a_rank INTEGER)');
+   	 tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERANSWERS (pa_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, word_id INTEGER, round_id INTEGER, def_id INTEGER, a_vote_count INTEGER, a_rank INTEGER)');
    	 tx.executeSql('CREATE TABLE IF NOT EXISTS DEFINITIONS (def_id INTEGER KEY UNIQUE, def_type INTEGER, def_text TEXT)');
    	 tx.executeSql('CREATE TABLE IF NOT EXISTS SETUPPARAMS (setup_id INTEGER KEY UNIQUE, setup_text TEXT, setup_value TEXT)');
    	 
@@ -61,16 +61,6 @@ function populateDB(tx){
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (18, 1, "Definition 18")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (19, 1, "Definition 19")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (20, 1, "Definition 20")');	 	 
-	 /*tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (21, 1, "Definition 21")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (22, 1, "Definition 22")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (23, 1, "Definition 23")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (24, 1, "Definition 24")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (25, 1, "Definition 25")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (26, 1, "Definition 26")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (27, 1, "Definition 27")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (28, 1, "Definition 28")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (29, 1, "Definition 29")');
-	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (30, 1, "Definition 30")'); 	 */
 	 
 	 //CREATE SETUP PARAMETERS       	 
    	 tx.executeSql('INSERT INTO SETUPPARAMS (setup_id, setup_text, setup_value) VALUES (1, "handsize", "5")');
@@ -204,9 +194,11 @@ function addPlayerAnswerDB(errorCallBack, successCallBack){
 }
 function addPlayerAnswerDBCall(tx){
 	var setPlayerName="";
-	//alert(numPlayers);
-	var a_def_id = $("input:radio:checked").val();
+	var a_def_id = 	$('input[name="definition"]:checked').val();//$("input:radio:checked").val();
+	//alert(a_def_id);
+	//alert(currentPlayer);
 	tx.executeSql('INSERT INTO PLAYERANSWERS(g_id,p_id,word_id,def_id,a_vote_count,a_rank) VALUES (?,?,?,?,?,?)', [currentGameID, currentPlayer, currentQID, a_def_id, 0,0], successCB, errorCB);
+	thePlayerAnswers.add(a_def_id, currentQID, currentPlayer, currentRound, currentGameID, 0, 0);
 }	
 function addPlayerAnswerDBSuccess(){
   	//alert('inside add player answer success db');
@@ -220,9 +212,7 @@ function getPlayerAnswerDBCall(tx){
     tx.executeSql('SELECT def_id, p_id from PLAYERANSWERS WHERE g_id = ? and word_id = ? and p_id = ?', [currentPlayer, currentQID, currentGameID], getDBPlayerAnswerDBSuccess, errorCB);
 }	
 function getDBPlayerAnswerDBSuccess(tx, results) {
-    //alert("inside queryDBPlayersDBSuccess");
     for(var i=0; i<results.rows.length;i++){
-		//alert(results.rows.item(i).def_id);
-		//alert(results.rows.item(i).p_id);
+		//thePlayerAnswers.add(results.rows.item(i).p_id, currentQID, results.rows.item(i).def_id, currentGameID, currentRound, 0, 0);
     }
 }

@@ -23,6 +23,9 @@ var currentRound = 1;
 var currentReader = 0;
 var currentReaderName = "";
 
+var currentWinner = 0;
+var currentWinnerName = "";
+
 var nextReader = 0;
 var nextReaderName = "";
 
@@ -32,15 +35,16 @@ var currentPlayerName = "";
 var nextPlayer = 0;
 var nextPlayerName = "";
 
-var currentStage = 5;
-var maxRounds = 2;
+var currentStage = 0;
+var maxRounds = 7;
 var listCreated = true;
 var numPlayers = 3;
-
 var currentAllPlayers = new PlayerCollection();
 var currentRoundPlayers = new RoundPlayerCollection();
 var myWords = new WordCollection();
 var myDefinitions = new DefinitionCollection();
+var thePlayerAnswers = new PlayerAnswerCollection();
+var ids = [];
 
 function init(){
     document.addEventListener("deviceready", startup);
@@ -61,6 +65,28 @@ function onClick(){
 function onStartClick(){
 	resetPlayers();
     $.mobile.changePage("add_players.html", {transition: "none"} );
+}
+
+function onRankAnswersSubmit(){
+    var answers = $(".sub_answers");
+	ids = [];
+	
+	for(var x=0; x<answers.length; x++)
+    {
+        ids.push(answers[x].id);
+    }
+	
+	currentWinner = thePlayerAnswers.item(parseInt(ids[0])).player_id;
+	currentWinnerName = currentAllPlayers.item(currentWinner).p_name;
+	
+	for (var i = 0; i < ids.length; i++) {
+		thePlayerAnswers.setRank(parseInt(ids[i]), i+1);
+	   // Trim the excess whitespace.
+	   //ids[i] = ids[i].replace(/^\s*/, "").replace(/\s*$/, "");
+	   // Add additional code here, such as:
+	   //alert(ids[i]);
+	}
+	moveToNextPage();
 }
 
 function onRulesClick(){
@@ -100,7 +126,7 @@ function queryNewDefinition(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -116,7 +142,7 @@ function queryNewDefinition(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -138,7 +164,7 @@ function queryNewDefinition1(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -153,7 +179,7 @@ function queryNewDefinition2(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -168,7 +194,7 @@ function queryNewDefinition3(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -183,7 +209,7 @@ function queryNewDefinition4(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -198,7 +224,7 @@ function queryNewDefinition5(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewDef == false && allUsed == false)
+	while (allUsed == false && foundNewDef == false)
 	{
 		allUsed = checkForAllUsedDefs();
 	 	randomKey = Math.floor((Math.random()*myDefinitions.count)+1);
@@ -213,7 +239,7 @@ function queryNewWord(){
 	var randomKey = 0;
 	var allUsed = false;
 	
-	while (foundNewWord == false && allUsed == false)
+	while (allUsed == false && foundNewWord == false)
 	{
 		allUsed = checkForAllUsedWords();
 	 	randomKey = Math.floor((Math.random()*myWords.count)+1);
@@ -362,8 +388,6 @@ function appendToRoundOne(){
 }
 
 function appendCurrentVariables(){
-	$("#content").append("<ul id='currentvariables' data-role='listview' data-inset='true'></ul>");
-    $("#currentvariables").append("<div>");
 	//$("#currentvariables").append("<li><label for='text-basic'>currentStage: " + currentStage + "</label></li>");
 	$("#currentvariables").append("<li><center><label for='text-basic'>Round: " + currentRound + "</label></center></li>");
 	
@@ -381,33 +405,45 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
 			//$("#currentvariables").append("<li><label for='text-basic'>currentQuestionRealText: " + currentQRealText + "</label></li>");
-			$("#content").trigger("create");
-			$("#currentvariables").listview("refresh");
-		break;
+			break;
 		case 2:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
 			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
-			$("#content").trigger("create");
-			$("#currentvariables").listview("refresh");
 			break;
 		case 3:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
 			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
-			$("#content").trigger("create");
-			$("#currentvariables").listview("refresh");
-		break;
+			break;
 		case 5:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
-		break;
+			break;
+		case 6:
+			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
+			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			break;
+		case 7:
+			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
+			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			break;
+		case 8:
+			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
+			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			break;
+		case 9:
+			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentWinnerName + "</label></center></li>");
+			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			break;
 		default:
 			//$("#currentvariables").append("<li><label for='text-basic'>currentReader: " + currentReader + " name: " + currentReaderName + "</label></li>");
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
 		break;
 	}
-	$("#currentvariables").append("</div>");
-	$("#content").trigger("create");
 	$("#currentvariables").listview("refresh");
 	
 	//BODY
@@ -420,9 +456,9 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<li><center><label for='text-basic'>"+currentPlayerName+"</label></center></li>");
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</fieldset>");
-			$("#currentvariables").append("<input type='button' id='submitDefinition' onClick='moveToNextPage()' value='"+currentPlayerName+" - Click to Continue'/>");
-			$("#content").trigger("create");
 			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='submitDefinition' onClick='moveToNextPage()' value='"+currentPlayerName+" - Click to Continue'/>");
+			$("#content").trigger("create");
 		break;
 		case 2:
 			$("#currentvariables").append("<div data-role='fieldcontain'>");
@@ -437,10 +473,10 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
-			
-			$("#currentvariables").append("<input type='button' id='submitDefinition' onClick='onReceviedDefinition()' value='Submit'/>");
-			$("#content").trigger("create");
 			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='submitDefinition' onClick='onReceviedDefinition()' value='Submit'/>");
+			$("#content").trigger("create");
+
 		break;
 		case 3:
 			$("#currentvariables").append("<li><label for='text-basic'><center>Definition recieved!</label></center></li>");
@@ -450,9 +486,10 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<li><center><label for='text-basic'>"+nextPlayerName+"</label></center></li>");
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</fieldset>");
-			$("#currentvariables").append("<input type='button' id='submitDefinition' onClick='moveToNextPage()' value='"+nextPlayerName+" - Click to Continue'/>");
-			$("#content").trigger("create");
 			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='submitDefinition' onClick='moveToNextPage()' value='"+nextPlayerName+" - Click to Continue'/>");
+			$("#content").trigger("create");
+
 		break;
 		case 4:
 			$("#currentvariables").append("<li><label for='text-basic'><center>Definition recieved!</label></center></li>");
@@ -463,50 +500,81 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<li><center><label for='text-basic'>"+currentReaderName+"</label></center></li>");
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</fieldset>");
-			$("#currentvariables").append("<input type='button' id='submitDefinition' onClick='moveToNextPage()' value='"+currentReaderName+" - Click to Continue'/>");
-			$("#content").trigger("create");
 			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='submitDefinition' onClick='moveToNextPage()' value='"+currentReaderName+" - Click to Continue'/>");
+			$("#content").trigger("create");
 		break;
 		case 5:
 			$("#currentvariables").append("<li><label for='text-basic'><center>Rank Definitions</label></center></li>");
-			$("#currentvariables").append("<div data-role='fieldcontain'>");
-			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
-			$("#currentvariables").append("<legend>Drag the definitions below to change their ranks.  Your most favourite definition is at the bottom</legend>");
-			$("#currentvariables").append("<ul data-role='listview' id='sortable' data-divider-theme='b' data-inset='true'>");
-            $("#currentvariables").append("<li data-role='list-divider' role='heading'>Re-order</li>");
-            $("#currentvariables").append("<li data-theme='c'>1</li>");
-            $("#currentvariables").append("<li data-theme='c'>2</li>");
-            $("#currentvariables").append("<li data-theme='c'>3</li>");
-            $("#currentvariables").append("<li data-theme='c'>4</li>");
-            $("#currentvariables").append("<li data-theme='c'>5</li>");
-            $("#currentvariables").append("<li data-theme='c'>6</li>");
-            $("#currentvariables").append("<li data-theme='c'>7</li>");
 			$("#currentvariables").append("</ul>");
-			$("#currentvariables").append("</div>");
-			$("#currentvariables").append("</fieldset>");
-			$("#currentvariables").append("<input type='button' id='submitDefinition' onClick='onRankAnswersSubmit()' value='Submit'/>");
-			$("#content").trigger("create");
+			$("#currentvariables").append("<legend>Drag the definitions below to change their ranks.  Your most favourite definition is at the top</legend>");
 			$("#currentvariables").listview("refresh");
+			$("#sortable").append("<li data-role='list-divider'>Answers</li>");
+			thePlayerAnswers.forEach(
+			function(d_id, w_id, p_id, r_id, d_v_count, d_rank)
+			{
+				if(r_id == currentRound)
+				{
+					$("#sortable").append("<li data-theme='c' class='sub_answers' id="+d_id+">"+myDefinitions.item(d_id).def_text+"<input type='text'/></li>");
+				}
+			});
+			$("#sortable").listview("refresh");
+			$("#content").append("<input type='button' id='submitDefinition' onClick='onRankAnswersSubmit()' value='Submit'/>");
+			$("#content").trigger("create");
 		break;
-		default:
+		case 6:
+			$("#currentvariables").append("<li><label for='text-basic'><center>Read Definitions</label></center></li>");
+			$("#currentvariables").append("<legend>Read the re-definitions below out loud, ordered by favourite to least favourite</legend>");
+			$("#currentvariables").append("<li data-role='list-divider'>Answers</li>");
+			for (var i = 0; i < ids.length; i++) 
+			{
+				//alert(ids[i]);
+				$("#currentvariables").append("<li data-theme='c' class='ranked_answers'>"+ myDefinitions.item(parseInt(ids[i])).def_text + "</li>");
+			}
+			$("#currentvariables").append("</ul>");
+			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Continue'/>");
+			$("#content").trigger("create");
+			break;
+		case 7:	
 			$("#currentvariables").append("<div data-role='fieldcontain'>");
 			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
-			$("#currentvariables").append("<legend>Definitions</legend>");	
-			$("#currentvariables").append("<div id='radio'>");
-			$("#currentvariables").append("<input name='definition' id='radio1' value='" + currentDef1ID + "' type='radio'><label for='radio1'>"+currentDef1Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio2' value='" + currentDef2ID + "' type='radio'><label for='radio2'>"+currentDef2Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio3' value='" + currentDef3ID + "' type='radio'><label for='radio3'>"+currentDef3Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio4' value='" + currentDef4ID + "' type='radio'><label for='radio4'>"+currentDef4Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio5' value='" + currentDef5ID + "' type='radio'><label for='radio5'>"+currentDef5Text+"</label>");
-			$("#currentvariables").append("</div>");
+			$("#currentvariables").append("<legend>Read the real definition out loud, if the other players are interested:</legend>");
+			$("#currentvariables").append("<li><center>"+currentQRealText+"</center></li>");
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
-			$("#content").trigger("create");
+			$("#currentvariables").append("</ul>");
 			$("#currentvariables").listview("refresh");
-			
-			$("#currentvariables").append("<input type='button' id='submitDefinition' onClick='onReceviedDefinition()' value='Submit'/>");
+			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Continue'/>");
 			$("#content").trigger("create");
+			break;
+		case 8:
+			$("#currentvariables").append("<legend>Winner for the round is:</legend>");
+			$("#currentvariables").append("<li><center>"+currentWinnerName+"</center></li>");
+			$("#currentvariables").append("</ul>");
 			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='"+currentWinnerName+" - Click to Continue'/>");
+			$("#content").trigger("create");
+			break;
+		case 9:
+			$("#currentvariables").append("<legend>Assign a drink:</legend>");
+			$("#currentvariables").append("<li><center>Choose which player takes a drink</center></li>");
+			$("#currentvariables").append("<div id='radio'>");
+			currentAllPlayers.forEach(
+			function(p_id, p_name)
+			{
+				if(p_id != currentWinner)
+				{
+					$("#currentvariables").append("<input name='playerdrink' id='"+p_id+"' value='" + p_name + "' type='radio'><label for='"+p_id+"'>"+p_name+"</label>");
+				}
+			});
+			$("#currentvariables").append("</div>");
+			$("#currentvariables").append("</ul>");
+			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Continue'/>");
+			$("#content").trigger("create");
+			break;
+		default:
 		break;
 	}
 }

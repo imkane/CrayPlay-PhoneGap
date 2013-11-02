@@ -4,44 +4,79 @@
     <meta name="viewport" content="width=320; user-scalable=no" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Rank Answers</title>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
     <script type="text/javascript" charset="utf-8" src="js/phonegap-1.3.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-
 	</head>
 <body>
-
 <div data-role="page" id="rank_answers">
 <script>
 $('#rank_answers').bind('pageshow', function(){
 	//alert("inside select_definition pageshow");
 	resetPageVariables(5);
 	grabCurrentVariables();
-	
-	$('ul')
-	.addClass('ui-corner-top')
-	.removeClass('ui-corner-all')
-	.sortable({
-		'containment': 'parent',
-		'opacity': 0.6,
-		update: function(event, ui) {
-			alert("dropped");
-		}
+	/*
+	$( "#sortable" ).sortable();
+	$( "#sortable" ).disableSelection();
+	<!-- Refresh list to the end of sort to have a correct display -->
+	$( "#sortable" ).bind( "sortstop", function(event, ui) {
+	  $('#sortable').listview('refresh');
 	});
-		
+	*/
+	
+sort_ul = $('#sortable');
+itemsCount = $('#sortable li').length;
+
+function updateIndexes(){
+    $('li input').each(function(i){
+              $(this).val(i+1);
+          });
+}
+
+updateIndexes();
+
+$('#sortable li').removeClass('ui-corner-bottom');
+
+sort_ul.sortable({
+       items: "li:not(.ui-li-divider)"
 });
-</script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-<script>
-$(document).bind('pageinit', function() {
-$( "#sortable" ).sortable();
-$( "#sortable" ).disableSelection();
-<!-- Refresh list to the end of sort to have a correct display -->
-$( "#sortable" ).bind( "sortstop", function(event, ui) {
-  $('#sortable').listview('refresh');
+
+sort_ul.disableSelection();
+
+sort_ul.bind( "sortstop", function(event, ui) {
+updateIndexes();
+});
+	
+$('li input').keyup(function(event) {
+  if(event.keyCode == '13'){      
+    event.preventDefault();
+      
+    order = parseInt($(this).val());
+      
+    li = $(this).parent();
+    if(order>=1 && order <= itemsCount){      
+        
+        li.effect('drop', function(){
+            li.detach();
+                
+            if(order == itemsCount)
+                sort_ul.append(li);
+            else
+                li.insertBefore($('#sortable li:eq('+(order-1)+')'));
+            
+            updateIndexes();
+            li.effect('slide');
+        });
+    }else{
+        li.effect('highlight');
+    }
+  }    
 });
 });
+
 </script>
 		<div data-role="header" data-theme="e">
 			<a data-role="button" data-rel="back" data-mini="true">Back</a></h3>
@@ -50,15 +85,9 @@ $( "#sortable" ).bind( "sortstop", function(event, ui) {
 
 		<div data-role="content" id="content" data-theme="e">
 			<h2>Rank Answers</h2>
-		<ul data-role="listview" data-inset="true" data-theme="d" id="sortable">
-		<li data-role="list-divider">List</li>
-		<li>Item 1</li>
-		<li>Item 2</li>
-		<li>Item 3</li>
-		<li>Item 4</li>
-		<li>Item 5</li>
-		</ul>
-			<!-- <input type="button" id="clicktoContinue" onClick="moveToNextPage()" value="Player - Click To Continue"> -->
+			<ul id='currentvariables' data-role='listview' data-inset='true'></ul>
+			
+			<ul data-role="listview" data-divider-theme="b" data-inset="true" id="sortable"></ul>
 		</div><!-- /content -->
 			
 	<div data-role="footer" class="ui-bar" data-theme="e">
