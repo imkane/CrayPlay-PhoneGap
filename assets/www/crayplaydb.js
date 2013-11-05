@@ -61,6 +61,46 @@ function populateDB(tx){
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (18, 1, "Definition 18")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (19, 1, "Definition 19")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (20, 1, "Definition 20")');	 	 
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (21, 1, "Definition 21")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (22, 1, "Definition 22")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (23, 1, "Definition 23")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (24, 1, "Definition 24")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (25, 1, "Definition 25")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (26, 1, "Definition 26")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (27, 1, "Definition 27")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (28, 1, "Definition 28")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (29, 1, "Definition 29")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (30, 1, "Definition 30")');	 
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (31, 1, "Definition 31")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (32, 1, "Definition 32")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (33, 1, "Definition 33")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (34, 1, "Definition 34")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (35, 1, "Definition 35")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (36, 1, "Definition 36")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (37, 1, "Definition 37")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (38, 1, "Definition 38")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (39, 1, "Definition 39")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (40, 1, "Definition 40")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (41, 1, "Definition 41")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (42, 1, "Definition 42")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (43, 1, "Definition 43")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (44, 1, "Definition 44")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (45, 1, "Definition 45")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (46, 1, "Definition 46")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (47, 1, "Definition 47")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (48, 1, "Definition 48")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (49, 1, "Definition 49")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (50, 1, "Definition 50")');	 	 
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (51, 1, "Definition 51")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (52, 1, "Definition 52")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (53, 1, "Definition 53")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (54, 1, "Definition 54")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (55, 1, "Definition 55")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (56, 1, "Definition 56")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (57, 1, "Definition 57")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (58, 1, "Definition 58")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (59, 1, "Definition 59")');
+	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (60, 1, "Definition 60")');	 
 	 
 	 //CREATE SETUP PARAMETERS       	 
    	 tx.executeSql('INSERT INTO SETUPPARAMS (setup_id, setup_text, setup_value) VALUES (1, "handsize", "5")');
@@ -85,7 +125,7 @@ function deletePlayersDB(errorCallBack, successCallBack){
     var db = window.openDatabase("CrayPlay", "1.0", "CrayPlay DB", 1000000);
     db.transaction(deletePlayersDBCall, errorCallBack, successCallBack);
     currentAllPlayers.forEach(
-    function(p_id, p_name)
+    function(p_id, p_name, p_points)
     {
     	currentAllPlayers.remove(p_id);
     }
@@ -123,7 +163,7 @@ function getPlayersDBCall(tx){
 function getDBPlayersDBSuccess(tx, results) {
     //alert("inside queryDBPlayersDBSuccess");
     for(var i=0; i<results.rows.length;i++){
-		currentAllPlayers.add(results.rows.item(i).p_id, results.rows.item(i).p_name);
+		currentAllPlayers.add(results.rows.item(i).p_id, results.rows.item(i).p_name, 0);
     }
     numPlayers = currentAllPlayers.count;
 }
@@ -131,7 +171,6 @@ function selectCurrentPlayer(){
     currentReader = currentAllPlayers.grabFirstPlayer().p_id;
     currentReaderName = currentAllPlayers.grabFirstPlayer().p_name;
     currentRoundPlayers.resetPlayers(currentReader);
-    	
     currentPlayer = currentRoundPlayers.grabNextPlayer().p_id;
     currentPlayerName = currentRoundPlayers.grabNextPlayer().p_name;
 	createNewGameDB(errorCB, moveToNextPage);

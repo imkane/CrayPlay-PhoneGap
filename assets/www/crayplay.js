@@ -37,6 +37,11 @@ var nextPlayerName = "";
 
 var currentStage = 0;
 var maxRounds = 7;
+
+var maxPoints = 3;
+var currentPoints = 0;
+var currentMax = 0;
+
 var listCreated = true;
 var numPlayers = 3;
 var currentAllPlayers = new PlayerCollection();
@@ -69,6 +74,7 @@ function onStartClick(){
 
 function onRankAnswersSubmit(){
     var answers = $(".sub_answers");
+
 	ids = [];
 	
 	for(var x=0; x<answers.length; x++)
@@ -78,7 +84,12 @@ function onRankAnswersSubmit(){
 	
 	currentWinner = thePlayerAnswers.item(parseInt(ids[0])).player_id;
 	currentWinnerName = currentAllPlayers.item(currentWinner).p_name;
-	
+	currentAllPlayers.item(currentWinner).p_points++;
+	currentPoints = currentAllPlayers.item(currentWinner).p_points;
+	if(currentPoints > currentMax)
+	{
+		currentMax = currentPoints;
+	}
 	for (var i = 0; i < ids.length; i++) {
 		thePlayerAnswers.setRank(parseInt(ids[i]), i+1);
 	   // Trim the excess whitespace.
@@ -340,7 +351,7 @@ function moveToNextPage(){
     	case 10:
 			currentRound++;
 			// if we are on the last stage we will increment the round and set the stage back to 1
-			if (currentRound > maxRounds) 
+			if (currentPoints >= maxPoints) 
 			{
 				currentStage = 10;
 		    	$.mobile.changePage("game_over.html", {transition: "none"} );
@@ -349,8 +360,11 @@ function moveToNextPage(){
 		    {
 		        currentStage = 0;
 				//todo remove this - just for testing.
-				currentReader = currentAllPlayers.grabSecondPlayer().p_id;
-		    	currentReaderName = currentAllPlayers.grabSecondPlayer().p_name;
+				var tempRoundPlayer = RoundPlayerCollection();
+				tempRoundPlayer = currentAllPlayers.grabNextPlayer();
+				currentReader = tempRoundPlayer.p_id;
+		    	currentReaderName = tempRoundPlayer.p_name;
+				currentRoundPlayers.empty();
 		    	currentRoundPlayers.resetPlayers(currentReader);
 		    	currentPlayer = currentRoundPlayers.grabNextPlayer().p_id;
 		    	currentPlayerName = currentRoundPlayers.grabNextPlayer().p_name;
@@ -359,7 +373,7 @@ function moveToNextPage(){
     		}
     		break;
 		case 11:
-		    $.mobile.changePage("index.html#mainmenu", {transition: "none"} );
+		    $.mobile.changePage("index.html", {transition: "none"} );
     		break;
     	default:
     }
@@ -388,14 +402,12 @@ function appendToRoundOne(){
 }
 
 function appendCurrentVariables(){
-	//$("#currentvariables").append("<li><label for='text-basic'>currentStage: " + currentStage + "</label></li>");
 	$("#currentvariables").append("<li><center><label for='text-basic'>Round: " + currentRound + "</label></center></li>");
 	
 	// HEADER
 	switch(currentStage)
 	{
 		case 1:
-			//$("#currentvariables").append("<li><label for='text-basic'>currentPlayer: " + currentPlayer + " name: " + currentPlayerName + "</label></li>");
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
 			$("#currentvariables").append("<div data-role='fieldcontain'>");
 			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
@@ -404,7 +416,6 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
-			//$("#currentvariables").append("<li><label for='text-basic'>currentQuestionRealText: " + currentQRealText + "</label></li>");
 			break;
 		case 2:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
@@ -439,8 +450,11 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
 			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
 			break;
+		case 10:
+			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentWinnerName + "</label></center></li>");
+			$("#currentvariables").append("<li><center><label for='text-basic'>Congrats, You Win!</label></center></li>");
+			break;
 		default:
-			//$("#currentvariables").append("<li><label for='text-basic'>currentReader: " + currentReader + " name: " + currentReaderName + "</label></li>");
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
 		break;
 	}
@@ -551,6 +565,14 @@ function appendCurrentVariables(){
 		case 8:
 			$("#currentvariables").append("<legend>Winner for the round is:</legend>");
 			$("#currentvariables").append("<li><center>"+currentWinnerName+"</center></li>");
+			if(currentPoints == 1)
+			{
+				$("#currentvariables").append("<li><center>You have "+currentPoints+" point</center></li>");
+			}
+			else
+			{
+				$("#currentvariables").append("<li><center>You have "+currentPoints+" points</center></li>");
+			}
 			$("#currentvariables").append("</ul>");
 			$("#currentvariables").listview("refresh");
 			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='"+currentWinnerName+" - Click to Continue'/>");
@@ -574,6 +596,10 @@ function appendCurrentVariables(){
 			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Continue'/>");
 			$("#content").trigger("create");
 			break;
+		case 10:
+			$("#currentvariables").listview("refresh");
+			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Start Over'/>");
+			$("#content").trigger("create");
 		default:
 		break;
 	}

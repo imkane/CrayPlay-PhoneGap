@@ -2,14 +2,16 @@ var PlayerCollection=function()
 {
 	this.count=0;
 	this.collection={};
-
-	this.add=function(key, name)
+	this.index=0;
+	
+	this.add=function(key, name, points)
 	{
 		if(this.collection[key]!=undefined)
 			return undefined;
 		this.collection[key] = {
 								p_id:key,
-								p_name: name
+								p_name: name,
+								p_points: points
 								};			
 		return ++this.count;
 	}
@@ -60,13 +62,37 @@ var PlayerCollection=function()
 		return this.collection[secondKey];
 	}
 	
+	this.grabNextPlayer=function()
+	{
+		var nextKey = 0;
+		var counter = 0;
+		var tempIndex = ++this.index;
+		if (tempIndex > this.count)
+		{
+			tempIndex = 0;
+			this.index = 0;
+		}
+		for(key in this.collection) 
+		{
+			nextKey = key;
+			if(counter == tempIndex)
+			break;
+			counter++;
+		}
+		if(this.collection[nextKey]==undefined)
+		return undefined;
+			
+		return this.collection[nextKey];
+	}
+	
+	
 	this.forEach=function(block)
 	{
 		for(key in this.collection) 
 		{
 			if(this.collection.hasOwnProperty(key))
 			{
-				block(key, this.collection[key].p_name);
+				block(key, this.collection[key].p_name, this.collection[key].p_points);
 			}
 		}
 	 }
