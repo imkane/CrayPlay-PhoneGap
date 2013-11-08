@@ -1,24 +1,34 @@
 function populateDB(tx){
      //DROP OLD TABLES
-     tx.executeSql('DROP TABLE IF EXISTS QUESTIONS');
-     tx.executeSql('DROP TABLE IF EXISTS WORDS');
-	 tx.executeSql('DROP TABLE IF EXISTS PLAYERS');
-	 tx.executeSql('DROP TABLE IF EXISTS GAMELOG');
-	 tx.executeSql('DROP TABLE IF EXISTS GAMETRANLOG');
-	 tx.executeSql('DROP TABLE IF EXISTS PLAYERANSWERS');
-	 tx.executeSql('DROP TABLE IF EXISTS DEFINITIONS');
-	 tx.executeSql('DROP TABLE IF EXISTS SETUPPARAMS');
+	tx.executeSql('DROP TABLE IF EXISTS QUESTIONS');
+	tx.executeSql('DROP TABLE IF EXISTS WORDS');
+	tx.executeSql('DROP TABLE IF EXISTS PLAYERS');
+	tx.executeSql('DROP TABLE IF EXISTS GAMELOG');
+	tx.executeSql('DROP TABLE IF EXISTS GAMETRANLOG');
+	tx.executeSql('DROP TABLE IF EXISTS PLAYERANSWERS');
+	tx.executeSql('DROP TABLE IF EXISTS DEFINITIONS');
+	tx.executeSql('DROP TABLE IF EXISTS SETUPPARAMS');
 	 	 
 	 //CREATE TABLES
-     tx.executeSql('CREATE TABLE IF NOT EXISTS WORDS (word_id INTEGER PRIMARY KEY UNIQUE, word_type INTEGER, word_text TEXT, word_realdef TEXT)');
-     tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERS (p_id INTEGER PRIMARY KEY AUTOINCREMENT, p_name TEXT)');
-     tx.executeSql('CREATE TABLE IF NOT EXISTS GAMELOG (g_id INTEGER PRIMARY KEY AUTOINCREMENT, p_winner INTEGER, played_date DATE)');
-     tx.executeSql('CREATE TABLE IF NOT EXISTS GAMETRANLOG (gt_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, def_id INTEGER, def_used_ind INTEGER)');
-   	 tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERANSWERS (pa_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, word_id INTEGER, round_id INTEGER, def_id INTEGER, a_vote_count INTEGER, a_rank INTEGER)');
-   	 tx.executeSql('CREATE TABLE IF NOT EXISTS DEFINITIONS (def_id INTEGER KEY UNIQUE, def_type INTEGER, def_text TEXT)');
-   	 tx.executeSql('CREATE TABLE IF NOT EXISTS SETUPPARAMS (setup_id INTEGER KEY UNIQUE, setup_text TEXT, setup_value TEXT)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS WORDS (word_id INTEGER PRIMARY KEY UNIQUE, word_type INTEGER, word_text TEXT, word_realdef TEXT)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERS (p_id INTEGER PRIMARY KEY AUTOINCREMENT, p_name TEXT)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS GAMELOG (g_id INTEGER PRIMARY KEY AUTOINCREMENT, p_winner INTEGER, played_date DATE)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS GAMETRANLOG (gt_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, def_id INTEGER, def_used_ind INTEGER)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERANSWERS (pa_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, word_id INTEGER, round_id INTEGER, def_id INTEGER, a_vote_count INTEGER, a_rank INTEGER)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS DEFINITIONS (def_id INTEGER KEY UNIQUE, def_type INTEGER, def_text TEXT)');
+	tx.executeSql('CREATE TABLE IF NOT EXISTS SETUPPARAMS (setup_id INTEGER KEY UNIQUE, setup_text TEXT, setup_value TEXT)');
    	 
    	 //CREATE WORDS
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (1,1,"Nerd","A foolish or contemptible person who lacks social skills or is boringly studious.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (2,1,"Geek","An unfashionable or socially inept person.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (3,1,"Dork","A contemptible, socially inept person.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (4,1,"Salamander","A newt-like amphibian that typically has bright markings, once thought able to endure fire.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (5,1,"The Big Bang","The rapid expansion of matter from a state of extremely high density and temperature which according to current cosmological theories marked the origin of the universe.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (6,1,"The Economy","The state of a country or region in terms of the production and consumption of goods and services and the supply of money.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (7,1,"The Deficit","The amount by which something, especially a sum of money, is too small.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (8,1,"Swallow","Cause or allow (something, especially food or drink) to pass down the throat.")');
+	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (9,1,"Vacuum","A space entirely devoid of matter.")');
+	 /*
    	 tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (1, 1, "Nipple", "The small projection of a woman\'s or girl\'s breasts in which the mammary ducts terminate and from which milk can be secreted")');
    	 tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (2, 1, "Word 2", "Word Definition 2")');
    	 tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (3, 1, "Word 3", "Word Definition 3")'); 
@@ -39,8 +49,49 @@ function populateDB(tx){
 	 tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (18, 1, "Word 18", "Word Definition 18")');
 	 tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (19, 1, "Word 19", "Word Definition 19")');
 	 tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (20, 1, "Word 20", "Word Definition 20")');	
+	 */
 	 
 	 //CREATE DEFINTIONS
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (1,1,"The softest, squishiest, warmest, most perfect thing imaginable")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (2,1,"A redneck robot")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (3,1,"The inverse of a muffin top")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (4,1,"The act of stealing from a disabled person")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (5,1,"A female hippopotamus")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (6,1,"Justin Bieber\'s left testicle")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (7,1,"The mold growing on the underside of a neglected sponge")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (8,1,"Crying while having sex")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (9,1,"The \'no\' feeling")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (10,1,"A popular internet meme")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (11,1,"The most popular animal on the farm")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (12,1,"An annoying song that\'s stuck in your head, forever")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (13,1,"The moment you realize your child is a doucebag")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (14,1,"Female morning wood")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (15,1,"A turtle\'s erect member")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (16,1,"Better than winning the lottery")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (17,1,"Teaching an aardvark how to do The Polka")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (18,1,"Having your asshole licked by an anteater")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (19,1,"aggressively humping a stranger\'s leg")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (20,1,"cheese-cupping your grandma")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (21,1,"spit taking into a midget\'s face")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (22,1,"diarrhea motorboat")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (23,1,"the sweat underneath a 93-year old woman\'s breasts")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (24,1,"when your balls stick to your thighs")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (25,1,"queefing back and forth, forever")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (26,1,"the most hip hipster")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (27,1,"an itch inside your chest cavity")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (28,1,"Super herpes")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (29,1,"starting a moshpit at a folk festival")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (30,1,"rocking out with your cock out, literally")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (31,1,"jamming out with your clam out, literally")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (32,1,"recreating The Human Centipede with your neighbor\'s cats")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (33,1,"waking up with a used tampon in your mouth")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (34,1,"farting really loud at the library and yelling \'nailed it!!")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (35,1,"Grandpa\'s smegma")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (36,1,"the smell of 1000 fiery poops")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (37,1,"sucking on a frozen hotdog")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (38,1,"waking up next to a dead hooker")');
+	tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (39,1,"wearing only a belt on a nude beach")');
+	 /*
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (1, 1, "Definition 1")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (2, 1, "Definition 2")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (3, 1, "Definition 3")');
@@ -101,6 +152,7 @@ function populateDB(tx){
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (58, 1, "Definition 58")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (59, 1, "Definition 59")');
 	 tx.executeSql('INSERT INTO DEFINITIONS (def_id, def_type, def_text) VALUES (60, 1, "Definition 60")');	 
+	 */
 	 
 	 //CREATE SETUP PARAMETERS       	 
    	 tx.executeSql('INSERT INTO SETUPPARAMS (setup_id, setup_text, setup_value) VALUES (1, "handsize", "5")');
