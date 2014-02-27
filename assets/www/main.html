@@ -1,0 +1,145 @@
+<!DOCTYPE HTML> 
+    <html>
+    <head>
+    
+    <meta name="viewport" content="width=320; user-scalable=no" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>CrayPlay</title>
+	<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
+    <link rel="stylesheet" href="css/jquery.ui.all.css" />
+    <link rel="stylesheet" href="css/jquery.mobile-1.4.1.min.css" />
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <!--Load Jquery -->
+	<script src="js/jquery-1.10.2.js"></script>
+     <!--Load Jquery Mobile-->
+    <script src="js/jquery.mobile-1.4.1.min.js"></script>
+	 <!--Load Jquery UI-->
+	<script src="js/ui/jquery.ui.core.js"></script>
+	<script src="js/ui/jquery.ui.widget.js"></script>
+	<script src="js/ui/jquery.ui.mouse.js"></script>
+	<script src="js/ui/jquery.ui.sortable.js"></script>
+     <!--Load Jquery Punch-->
+    <script src="js/jquery.ui.touch-punch.js"></script>
+	<script type="text/javascript" charset="utf-8" src="crayplaystructures.js"></script>
+
+	<script type="text/javascript" charset="utf-8" src="crayplay.js"></script>
+	<script type="text/javascript" charset="utf-8" src="crayplaydb.js"></script>
+	<script>
+	$('#rank_answers').bind('pageinit', function() {
+		$( "#sortable" ).sortable();
+		$( "#sortable" ).disableSelection();
+		<!-- Refresh list to the end of sort to have a correct display -->
+		$( "#sortable" ).bind( "sortstop", function(event, ui) {
+		  $('#sortable').listview('refresh');
+		});
+	});
+	$(function(){
+		
+		/*touch_init();
+		$('#draggable').draggable();*/
+		});
+	function touchHandler(event) {
+			var touch = event.changedTouches[0];
+		
+			var simulatedEvent = document.createEvent("MouseEvent");
+				simulatedEvent.initMouseEvent({
+				touchstart: "mousedown",
+				touchmove: "mousemove",
+				touchend: "mouseup"
+			}[event.type], true, true, window, 1,
+				touch.screenX, touch.screenY,
+				touch.clientX, touch.clientY, false,
+				false, false, false, 0, null);
+		
+			touch.target.dispatchEvent(simulatedEvent);
+			event.preventDefault();
+		}
+		
+		function touch_init() {
+			document.addEventListener("touchstart", touchHandler, true);
+			document.addEventListener("touchmove", touchHandler, true);
+			document.addEventListener("touchend", touchHandler, true);
+			document.addEventListener("touchcancel", touchHandler, true);
+		}
+	</script>
+    </head>
+
+    <body onload="init()">
+    
+<!-- Start of page: #index -->
+	<div data-role="page" id="index">
+	
+	<div data-role="header" data-theme="e">
+		<h1>CrayPlay</h1>
+    </div><!-- /header -->
+    
+    <div data-role="content" data-theme="e">
+	     <h2>Terms & Conditions</h2>
+		 <input type="button" id="termsButton" onClick="onClick()" value="Terms">
+           
+  	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-bar" data-theme="e">
+	</div><!-- /footer -->
+
+  	</div><!-- /index -->
+
+<!-- Start of page: #terms -->
+	<div data-role="page" id="terms">
+	
+	<div data-role="header" data-theme="e">
+		<h1>Terms & Conditions</h1>
+    </div><!-- /header -->
+    
+    <div data-role="content" data-theme="e">
+	    <h2>Terms & Conditions</h2>
+		<p>This is a regular page to hold all Terms and Conditions terms</p>
+		<a href="#mainmenu" data-role="button" data-theme="c">Agree</a>  
+		<a href="#index" data-role="button" data-rel="back" data-theme="a">Disagree</a>     
+  	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-bar" data-theme="e">
+	</div><!-- /footer -->
+
+  	</div><!-- /terms -->
+  	
+<!-- Start of page: #mainmenu -->
+	<div data-role="page" id="mainmenu">
+	
+	<div data-role="header" data-theme="e">
+		<h1>CrayPlay</h1>
+    </div><!-- /header -->
+    
+    <div data-role="content" data-theme="e">
+	    <h2>CrayPlay</h2>
+		<p>This is a regular page to hold all Terms and Conditions terms</p>
+		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
+		<input type="button" id="rulesButton" onClick="onRulesClick()" value="Rules">   
+  	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-bar" data-theme="e">
+	</div><!-- /footer -->
+
+  	</div><!-- /mainmenu -->
+
+  	
+<!-- Start of page: #rules -->
+	<div data-role="page" id="rules">
+	
+	<div data-role="header" data-theme="e">
+	<a href="#mainmenu" data-role="button" data-mini="true">Back</a>
+		<h1>CrayPlay Rules</h1>
+    </div><!-- /header -->
+    
+    <div data-role="content" data-theme="e">
+	    <h2>CrayPlay Rules</h2>
+		<p>Theses are the CrayPlay rules.  The game is played similarly to Cards Against Humanity...</p>
+		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
+  	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-bar" data-theme="e">
+	</div><!-- /footer -->
+
+  	</div><!-- /mainmenu -->
+  </body>
+</html>
