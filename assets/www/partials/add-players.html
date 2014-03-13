@@ -1,0 +1,22 @@
+<div class="topcoat-navigation-bar" align=center> <a class="topcoat-icon-button--quiet back-button" href="" ng-click="back()">
+    <span class="topcoat-icon topcoat-icon--back"></span>
+</a><h1 class="topcoat-navigation-bar__title header-title center" >Add Player</h1>
+</div>
+<div class="topcoat-list__container content-section"  >
+    
+    <div id="wrapper">
+        
+    <ul class="scroll-list-ul" id="scroll_list" data-divider-theme='f'>
+       
+        <li ng-repeat="player in players" ng-init="loaded()" class="topcoat-list__item">
+            <label>{{player.name}}</label><span class="remove-icon" ng-mousedown="removePlayer($index)"></span>
+                
+                    </li>
+                </ul></div>
+    
+    <ul class="footer" data-divider-theme='f' >
+        <li ng-show="!playerValidate"><span style="color:red">More Than 2 players are require to Play</span></li>
+        <li align=center ng-show="!isAddPlayer"><p class=" topcoat-button-bar__button" ng-mousedown="switchAddPlayer()">Add More Player </p><p class=" topcoat-button-bar__button" style="margin-left:10px;" ng-mousedown="startPlay()">Let's Play </p><li>
+             <li align=center ng-show="isAddPlayer"><input type="text" id="inputPlayer" class="custom-txt-box" placeholder="Player name" ng-model="newPlayerName"/><p class=" topcoat-button-bar__button" style="margin-left:10px;" ng-mousedown="addMorePlayer()">Add </p><li>
+            </ul>
+</div>

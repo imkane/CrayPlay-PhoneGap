@@ -1,0 +1,43 @@
+<div class="topcoat-navigation-bar" align="center"> <a class="topcoat-icon-button--quiet back-button" href="" ng-click="back()">
+    <span class="topcoat-icon topcoat-icon--back"></span>
+</a><h1 class="topcoat-navigation-bar__title center" >New Word</h1>
+</div>
+<div class="topcoat-list__container content-section"  >
+    
+    <div id="wrapper">
+        
+        <ul class="scroll-list-ul" id="scroll_list" data-divider-theme="f">
+            <li  >
+                <h1 class="topcoat-navigation-bar__title center" >Read New Word</h1>
+                
+            </li>
+            <li  class="second-header">
+               <label>{{round}} Round-1</label>
+                
+            </li>
+            <li  class="second-header">
+                <label>Player: {{currentPlayer}} </label>
+                
+            </li>
+            <li  class="topcoat-list__item">
+                <label>Read the following out loud to the other players...</label>
+                
+            </li>
+            <li  class="topcoat-list__item">
+                <label>Re-define the following word or phase:</label>
+                
+            </li>
+            <li  class="topcoat-list__item" align=center>
+                 <label>"{{currentWord.word_text}}"</label>                
+            </li>
+            <li  class="topcoat-list__item">
+                <label>Now pass the device to</label>                
+            </li>
+            <li  class="topcoat-list__item" ng-init="loaded()" align=center>
+                <label>{{nextPlayer}}</label>                
+            </li>
+        </ul></div>
+    <ul class="footer" data-divider-theme='f'>
+        <li align=center ><p class="topcoat-button-bar__button" ng-mousedown="go('/selctDef')">{{nextPlayer}}- Click to Continue</p><li>
+                </ul>
+</div>

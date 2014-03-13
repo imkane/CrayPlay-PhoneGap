@@ -56,7 +56,7 @@ function init(){
     initializeDB(errorCB, successCB);
 	queryDBQuestions(errorCB,successCB);
 	queryDBDefinitions(errorCB,successCB);
-	$.mobile.changePage("#terms", {role: "dialog", transition: "none"} );
+	$("body").pagecontainer("change","#terms", {role: "dialog", transition: "none"} );
 }
 
 function startup(){
@@ -64,12 +64,12 @@ function startup(){
 }
 
 function onClick(){
-	$.mobile.changePage("#terms", {role: "dialog", transition: "none"} );
+	$("body").pagecontainer("change","#terms", {role: "dialog", transition: "none"} );
 }
 
 function onStartClick(){
 	resetPlayers();
-    $.mobile.changePage("add_players.html", {transition: "none"} );
+    $("body").pagecontainer("change","add_players.html", {transition: "slide"} );
 }
 
 function onRankAnswersSubmit(){
@@ -101,17 +101,24 @@ function onRankAnswersSubmit(){
 }
 
 function onRulesClick(){
-    $.mobile.changePage("#rules", {transition: "none", reverse: false, changeHash: false} );
+    $("body").pagecontainer("change","#rules", {transition: "none", reverse: false, changeHash: false} );
 }
 
 function onStartGameClick(){
 	createNewGame();
 }
-
+var radiobtnb,flip=0;
 function onReceviedDefinition(){
-	//alert($("input:radio:checked").val());
+	if(flip == 0){
+		alert("You must select a definition!");
+		return false;
+		}
+	else{
+		flip=0;
+		}	
 	addPlayerAnswerDB(errorCB,successCB);
 	moveToNextPage();
+	
 }
 
 function resetPlayers(){
@@ -299,11 +306,11 @@ function moveToNextPage(){
     switch(currentStage)
     {
     	case 1:
-    		$.mobile.changePage("read_new_word.html", {transition: "none"} );
+    		$("body").pagecontainer("change","read_new_word.html", {transition: "none"} );
     		break;
     	case 2:
 			queryNewDefinition();
-    		$.mobile.changePage("select_definition.html", {transition: "none"} );
+    		$("body").pagecontainer("change","select_definition.html", {transition: "none"} );
     		break;
     	case 3:
     		// check if this is the last player to submit 
@@ -313,11 +320,11 @@ function moveToNextPage(){
 		    nextPlayerName = currentRoundPlayers.grabNextPlayer().p_name;
 		   	if(!currentRoundPlayers.checkAllSubmitted())
 		   	{
-		   		$.mobile.changePage("verify_def.html", {transition: "none"} );	
+		   		$("body").pagecontainer("change","verify_def.html", {transition: "none"} );	
 		   	}
 		   	else
 		   	{
-		   		$.mobile.changePage("verify_def_last_player.html", {transition: "none"} );
+		   		$("body").pagecontainer("change","verify_def_last_player.html", {transition: "none"} );
 		   	}
     		break;
     	case 4:
@@ -334,19 +341,19 @@ function moveToNextPage(){
     		}
     		break;
     	case 5:
-    		$.mobile.changePage("rank_answers.html", {transition: "none"} );
+    		$("body").pagecontainer("change","rank_answers.html", {transition: "none"} );
     		break;
     	case 6:
-    		$.mobile.changePage("read_answers.html", {transition: "none"} );
+    		$("body").pagecontainer("change","read_answers.html", {transition: "none"} );
     		break;
     	case 7:
-    		$.mobile.changePage("read_real_def.html", {transition: "none"} );
+    		$("body").pagecontainer("change","read_real_def.html", {transition: "none"} );
     		break;
     	case 8:
-    		$.mobile.changePage("read_winner.html", {transition: "none"} );
+    		$("body").pagecontainer("change","read_winner.html", {transition: "none"} );
     		break;
     	case 9:
-    		$.mobile.changePage("assign_drink.html", {transition: "none"} );
+    		$("body").pagecontainer("change","assign_drink.html", {transition: "none"} );
     		break;
     	case 10:
 			currentRound++;
@@ -354,7 +361,7 @@ function moveToNextPage(){
 			if (currentPoints >= maxPoints) 
 			{
 				currentStage = 10;
-		    	$.mobile.changePage("game_over.html", {transition: "none"} );
+		    	$("body").pagecontainer("change","game_over.html", {transition: "none"} );
 		    }
 		    else
 		    {
@@ -373,7 +380,7 @@ function moveToNextPage(){
     		}
     		break;
 		case 11:
-		    $.mobile.changePage("index.html", {transition: "none"} );
+		    $("body").pagecontainer("change","index.html", {transition: "none"} );
     		break;
     	default:
     }
@@ -381,11 +388,11 @@ function moveToNextPage(){
 
 function moveToRoundOne(){
 	//Move to the new page
-    $.mobile.changePage("round_one.html", {transition: "none"} );
+    $("body").pagecontainer("change","round_one.html", {transition: "none"} );
 }
 
 function appendToRoundOne(){
-	$("#content").append("<ul id='currentplayerlist' data-role='listview' data-inset='true'></ul>");
+	$("#content").append("<ul id='currentplayerlist' data-divider-theme='f' data-role='listview' data-inset='true'></ul>");
     $("#content").trigger("create");
     
     currentAllPlayers.forEach(
@@ -479,11 +486,11 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
 			$("#currentvariables").append("<legend>Definitions</legend>");	
 			$("#currentvariables").append("<div id='radio'>");
-			$("#currentvariables").append("<input name='definition' id='radio1' value='" + currentDef1ID + "' type='radio'><label for='radio1'>"+currentDef1Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio2' value='" + currentDef2ID + "' type='radio'><label for='radio2'>"+currentDef2Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio3' value='" + currentDef3ID + "' type='radio'><label for='radio3'>"+currentDef3Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio4' value='" + currentDef4ID + "' type='radio'><label for='radio4'>"+currentDef4Text+"</label>");
-			$("#currentvariables").append("<input name='definition' id='radio5' value='" + currentDef5ID + "' type='radio'><label for='radio5'>"+currentDef5Text+"</label>");
+			$("#currentvariables").append("<input name='definition' onClick='flip=1;' id='radio1' value='" + currentDef1ID + "' type='radio'><label for='radio1'>"+currentDef1Text+"</label>");
+			$("#currentvariables").append("<input name='definition' onClick='flip=1;' id='radio2' value='" + currentDef2ID + "' type='radio'><label for='radio2'>"+currentDef2Text+"</label>");
+			$("#currentvariables").append("<input name='definition' onClick='flip=1;' id='radio3' value='" + currentDef3ID + "' type='radio'><label for='radio3'>"+currentDef3Text+"</label>");
+			$("#currentvariables").append("<input name='definition' onClick='flip=1;' id='radio4' value='" + currentDef4ID + "' type='radio'><label for='radio4'>"+currentDef4Text+"</label>");
+			$("#currentvariables").append("<input name='definition' onClick='flip=1;' id='radio5' value='" + currentDef5ID + "' type='radio'><label for='radio5'>"+currentDef5Text+"</label>");
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
@@ -554,7 +561,7 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<div data-role='fieldcontain'>");
 			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
 			$("#currentvariables").append("<legend>Read the real definition out loud, if the other players are interested:</legend>");
-			$("#currentvariables").append("<li><center>"+currentQRealText+"</center></li>");
+			$("#currentvariables").append("<div class='centerit'>"+currentQRealText+"</div>");
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</ul>");
@@ -608,19 +615,45 @@ function appendCurrentVariables(){
 function appendToList(){
 	//Create the listview if not created
 	if(!listCreated){
-	    $("#content").append("<ul id='list' data-role='listview' data-inset='true'></ul>");
+	    $("#content").append("<ul id='list' data-divider-theme='f' data-role='listview' data-inset='true'></ul>");
 	    listCreated = true;
 	    $("#content").trigger("create");
 	}
 	numPlayers += 1;
+	console.log("after adding => "+numPlayers);
+	console.log(numPlayers);
 	$("#playerlist").append("<li><label for='text-basic'>Player "+numPlayers+":</label><input name='player"+numPlayers+"' id='player"+numPlayers+"name' value='' type='text'></li>");
 	$("#content").trigger("create");
 	$("#playerlist").listview("refresh");
 }
 
 function removeFromList(){
-	$('#playerlist').children().remove('li');
-	$("#content").trigger("create");
-	$("#playerlist").listview("refresh");
-	numPlayers -= 1;
+	if(numPlayers>3){
+		var li_to_remove = $('#playerlist li').last();
+		deleteChildren(li_to_remove);
+		li_to_remove.remove();
+		numPlayers -= 1;
+		console.log("after deleting => "+numPlayers);
+	}
+	else
+	{
+		alert('Minimum three players are required!');	
+	}
 }
+
+function deleteChildren(obj) {
+    obj.children().each(function(i, val) {
+        console.log(val);
+         if(typeof val.children=="function")
+            deleteChildren(val);
+         else{
+         	if(typeof val.remove=="function"){
+            		val.remove()
+            	}
+            else{
+            		val.parentNode.removeChild(val);
+            	}	
+            }
+    });
+}
+

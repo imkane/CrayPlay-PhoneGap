@@ -1,0 +1,13 @@
+<div class="topcoat-navigation-bar" align=center> 
+    <h1 class="topcoat-navigation-bar__title header-title center" >Cray Play</h1>
+    </div>
+<div class="topcoat-list__container content-section" >
+    
+    <ul class="list-ul" ng-show="isTerms" >
+        <li align=center> <h1 class="topcoat-navigation-bar__title">This is the terms and conditions for the cray play game</h1><li>
+        <li align=center><p class=" topcoat-button-bar__button" ng-click="go('/newGame')">I Agree</p>&nbsp;&nbsp;&nbsp;<p class=" topcoat-button-bar__button" ng-click="isTandC()">I Disagree</p><li>
+            </ul>
+    <ul class="footer" ng-show="!isTerms" data-divider-theme='f'>
+       <li align=center><p class=" topcoat-button-bar__button" ng-mousedown="isTandC()">Terms &amp; Conditions </p><li>
+       </ul>
+</div>

@@ -1,0 +1,34 @@
+<div class="topcoat-navigation-bar" align="center"> <a class="topcoat-icon-button--quiet back-button" href="" ng-click="back()">
+    <span class="topcoat-icon topcoat-icon--back"></span>
+</a><h1 class="topcoat-navigation-bar__title center" >Rank Answers</h1>
+</div>
+<div class="topcoat-list__container content-section"  >
+        <ul class="scroll-list" data-divider-theme='f'>
+           
+            <li  class="second-header">
+                <label> Round: {{round}}</label>
+                
+            </li>
+            <li  class="second-header">
+                <label>Player: {{nextPlayer}} </label>
+                
+            </li>
+            
+            <li  class="topcoat-list__item">
+               <label> Drag the definitions below to change their ranks. Your most favourite definition is at the top</label>
+                
+            </li>
+            <li><ul class="thumbnails scroll-list-ul" data-divider-theme='f'>
+                <li ng-repeat="note in notes" class="topcoat-list__item">
+                    <my-note class="thumbnail"  note="note">
+                       
+                    </my-note>
+                     <label>{{note.def_text}}</label>
+                </li>
+            </ul></li>
+                   </ul>
+   
+    <ul class="footer" data-divider-theme='f'>
+        <li align=center ><p class="topcoat-button-bar__button" ng-mousedown="">Submit</p><li>
+            </ul>
+</div>

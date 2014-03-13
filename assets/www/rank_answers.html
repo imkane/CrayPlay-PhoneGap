@@ -5,7 +5,11 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <title>Rank Answers</title>
     <link rel="stylesheet" href="css/jquery.ui.all.css" />
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.1.min.css" />
+    <link rel="stylesheet" href="css/jquery.ui.all.css" />
+    <!-- theme implewmentation -->
+    <link rel="stylesheet" href="css/Bootstrap.css">
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <!--Load Jquery -->
 	<script src="js/jquery-1.10.2.js"></script>
@@ -86,19 +90,19 @@ $('li input').keyup(function(event) {
 });
 
 </script>
-		<div data-role="header" data-theme="e">
+		<div data-role="header" >
 			<a data-role="button" data-rel="back" data-mini="true">Back</a>
 			<h1>Rank Answers</h1>
 		</div><!-- /header -->
 
-		<div data-role="content" id="content" data-theme="e">
+		<div data-role="content" id="content" >
 			<h2>Rank Answers</h2>
-			<ul id='currentvariables' data-role='listview' data-inset='true'></ul>
+			<ul id='currentvariables' data-role='listview' data-inset='true' data-divider-theme='f'></ul>
 			
-			<ul data-role="listview" data-divider-theme="b" data-inset="true" id="sortable"></ul>
+			<ul data-role="listview" data-inset="true" id="sortable" data-divider-theme='f'></ul>
 		</div><!-- /content -->
 			
-	<div data-role="footer" class="ui-bar" data-theme="e">
+	<div data-role="footer" class="ui-bar" >
 	</div><!-- /footer -->
 </div><!-- /page -->
 

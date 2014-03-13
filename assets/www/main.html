@@ -7,7 +7,12 @@
     <title>CrayPlay</title>
 	<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
     <link rel="stylesheet" href="css/jquery.ui.all.css" />
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.1.min.css" />
+    <!-- theme implewmentation -->
+    <link rel="stylesheet" href="css/Bootstrap.css">
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.0.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+    <!-- end ofnew theme implementation-->
+    <!--<link rel="stylesheet" href="css/jquery.ui.all.css" />-->
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <!--Load Jquery -->
 	<script src="js/jquery-1.10.2.js"></script>
@@ -21,7 +26,6 @@
      <!--Load Jquery Punch-->
     <script src="js/jquery.ui.touch-punch.js"></script>
 	<script type="text/javascript" charset="utf-8" src="crayplaystructures.js"></script>
-
 	<script type="text/javascript" charset="utf-8" src="crayplay.js"></script>
 	<script type="text/javascript" charset="utf-8" src="crayplaydb.js"></script>
 	<script>
@@ -34,9 +38,10 @@
 		});
 	});
 	$(function(){
-		
-		/*touch_init();
-		$('#draggable').draggable();*/
+		$.mobile.page.prototype.options.contentTheme = "f"; //your theme
+		$.mobile.page.prototype.options.theme = "f";
+		$.mobile.page.prototype.options.headerTheme= "f";
+		$.mobile.page.prototype.options.footerTheme="f";
 		});
 	function touchHandler(event) {
 			var touch = event.changedTouches[0];
@@ -62,24 +67,30 @@
 			document.addEventListener("touchcancel", touchHandler, true);
 		}
 	</script>
+    <style>
+	.centerit{
+		background-color:white;
+		border:1px solid black;
+		}
+	</style>
     </head>
-
+	
     <body onload="init()">
     
 <!-- Start of page: #index -->
-	<div data-role="page" id="index">
+	<div data-role="page" id="index" data-theme="f">
 	
-	<div data-role="header" data-theme="e">
+	<div data-role="header" data-theme="f">
 		<h1>CrayPlay</h1>
     </div><!-- /header -->
     
-    <div data-role="content" data-theme="e">
+    <div data-role="content" data-theme="f">
 	     <h2>Terms & Conditions</h2>
 		 <input type="button" id="termsButton" onClick="onClick()" value="Terms">
            
   	</div><!-- /content -->
 	
-	<div data-role="footer" class="ui-bar" data-theme="e">
+	<div data-role="footer" class="ui-bar" data-theme="f">
 	</div><!-- /footer -->
 
   	</div><!-- /index -->
@@ -87,18 +98,18 @@
 <!-- Start of page: #terms -->
 	<div data-role="page" id="terms">
 	
-	<div data-role="header" data-theme="e">
+	<div data-role="header">
 		<h1>Terms & Conditions</h1>
     </div><!-- /header -->
     
-    <div data-role="content" data-theme="e">
+    <div data-role="content" >
 	    <h2>Terms & Conditions</h2>
 		<p>This is a regular page to hold all Terms and Conditions terms</p>
-		<a href="#mainmenu" data-role="button" data-theme="c">Agree</a>  
-		<a href="#index" data-role="button" data-rel="back" data-theme="a">Disagree</a>     
+		<a href="#mainmenu" data-role="button" >Agree</a>  
+		<a href="#index" data-role="button" data-rel="back" >Disagree</a>     
   	</div><!-- /content -->
 	
-	<div data-role="footer" class="ui-bar" data-theme="e">
+	<div data-role="footer" class="ui-bar" >
 	</div><!-- /footer -->
 
   	</div><!-- /terms -->
@@ -106,18 +117,18 @@
 <!-- Start of page: #mainmenu -->
 	<div data-role="page" id="mainmenu">
 	
-	<div data-role="header" data-theme="e">
+	<div data-role="header">
 		<h1>CrayPlay</h1>
     </div><!-- /header -->
     
-    <div data-role="content" data-theme="e">
+    <div data-role="content" >
 	    <h2>CrayPlay</h2>
 		<p>This is a regular page to hold all Terms and Conditions terms</p>
 		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
 		<input type="button" id="rulesButton" onClick="onRulesClick()" value="Rules">   
   	</div><!-- /content -->
 	
-	<div data-role="footer" class="ui-bar" data-theme="e">
+	<div data-role="footer" class="ui-bar" >
 	</div><!-- /footer -->
 
   	</div><!-- /mainmenu -->
@@ -126,18 +137,18 @@
 <!-- Start of page: #rules -->
 	<div data-role="page" id="rules">
 	
-	<div data-role="header" data-theme="e">
+	<div data-role="header">
 	<a href="#mainmenu" data-role="button" data-mini="true">Back</a>
 		<h1>CrayPlay Rules</h1>
     </div><!-- /header -->
     
-    <div data-role="content" data-theme="e">
+    <div data-role="content" >
 	    <h2>CrayPlay Rules</h2>
 		<p>Theses are the CrayPlay rules.  The game is played similarly to Cards Against Humanity...</p>
 		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
   	</div><!-- /content -->
 	
-	<div data-role="footer" class="ui-bar" data-theme="e">
+	<div data-role="footer" class="ui-bar" >
 	</div><!-- /footer -->
 
   	</div><!-- /mainmenu -->

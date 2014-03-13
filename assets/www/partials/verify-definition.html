@@ -1,0 +1,43 @@
+<div class="topcoat-navigation-bar" align="center"> <a class="topcoat-icon-button--quiet back-button" href="" ng-click="back()">
+    <span class="topcoat-icon topcoat-icon--back"></span>
+</a><h1 class="topcoat-navigation-bar__title center" >Verify Definintion</h1>
+</div>
+<div class="topcoat-list__container content-section"  >
+    
+    <div id="wrapper">
+        
+        <ul class="scroll-list-ul" id="scroll_list" data-divider-theme='f'>
+            <li  >
+                <h1 class="topcoat-navigation-bar__title center" >Verify definition</h1>
+                
+            </li>
+            <li  class="second-header">
+                <label> Round: {{round}}</label>
+                
+            </li>
+            <li  class="second-header">
+                <label>Player: {{currentPlayer}} </label>
+                
+            </li>
+            
+            <li  class="topcoat-list__item">
+                <label>Re-define the following word or phase:</label>
+                
+            </li>
+            <li  class="topcoat-list__item" align=center>
+                <label>"{{currentWord.word_text}}"</label>                
+            </li>
+            <li  class="topcoat-list__item">
+                <label>Definition Received!</label>                
+            </li>
+            <li  class="topcoat-list__item">
+                <label>Now pass the device to:</label>                
+            </li>
+            <li  class="topcoat-list__item" align=center ng-init="loaded()">
+                <label>{{nextPlayer}}</label>                
+            </li>
+        </ul></div>
+    <ul class="footer" data-divider-theme='f'>
+        <li align=center ><p class="topcoat-button-bar__button" ng-click="goToSelectDefinition()">{{nextPlayer}}- Click to Continue</p><li>
+            </ul>
+</div>
