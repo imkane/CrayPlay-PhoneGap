@@ -42,6 +42,15 @@
 		$.mobile.page.prototype.options.theme = "f";
 		$.mobile.page.prototype.options.headerTheme= "f";
 		$.mobile.page.prototype.options.footerTheme="f";
+			if(typeof device!="undefined")
+			{
+				var temp = 'Device Name: '     + device.name     + '<br />' + 
+				'Device PhoneGap: ' + device.phonegap + '<br />' + 
+				'Device Platform: ' + device.platform + '<br />' + 
+				'Device UUID: '     + device.uuid     + '<br />' + 
+				'Device Version: '  + device.version  + '<br />'; 
+				console.log(temp);
+			}
 		});
 	function touchHandler(event) {
 			var touch = event.changedTouches[0];
@@ -73,13 +82,19 @@
 		border:1px solid black;
 		}
 	</style>
+    <script>
+	$( "#index" ).pagecontainer({
+		beforeshow: function( event, ui ) {
+			checkTerms();
+			}
+	});
+	</script>
     </head>
 	
     <body onload="init()">
     
 <!-- Start of page: #index -->
 	<div data-role="page" id="index" data-theme="f">
-	
 	<div data-role="header" data-theme="f">
 		<h1>CrayPlay</h1>
     </div><!-- /header -->
@@ -113,10 +128,50 @@
 	</div><!-- /footer -->
 
   	</div><!-- /terms -->
-  	
-<!-- Start of page: #mainmenu -->
-	<div data-role="page" id="mainmenu">
+<!-- Drinks Count List-->
+<div data-role="page" id="drinks_count" data-theme="f">
+        <div data-role="header">
+            <h1>Drinks List</h1>
+        </div>
+        <a href="#assign_drink" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext" class="ui-btn-right">Close</a>
+        <table id='drinks_cnt_lists' width="100%">
+   
+        </table>
+</div>   
+<!-- Points Count List-->
+<div data-role="page" id="points_count" data-theme="f">
+        <div data-role="header">
+        	<a data-role="button" data-rel="back" data-mini="true">Back</a>
+            <h1>Score List</h1>
+        </div>
+        <table id='drinks_cnt_lists' width="100%">
+   
+        </table>
+</div>    
+<!-- Start of page: #terms -->
+	<div data-role="page" id="test">
 	
+	<div data-role="header">
+		<h1>Drinks List</h1>
+    </div><!-- /header -->
+    
+    <div data-role="content" >
+		<ul id='drinks_cnt_lists2' data-role='listview' data-inset='true' data-divider-theme='f'><li></li></ul>    
+  	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-bar" >
+	</div><!-- /footer -->
+
+  	</div><!-- /terms -->
+        
+<!-- Start of page: #mainmenu -->
+	<div data-role="page" id="mainmenu" data-theme="f">
+	
+    <script>
+	$('#mainmenu').bind('pageshow', function(){
+		upTerms();
+	});
+	</script>
 	<div data-role="header">
 		<h1>CrayPlay</h1>
     </div><!-- /header -->
@@ -144,7 +199,43 @@
     
     <div data-role="content" >
 	    <h2>CrayPlay Rules</h2>
-		<p>Theses are the CrayPlay rules.  The game is played similarly to Cards Against Humanity...</p>
+		<p>
+        <ol  data-role='listview' data-inset='true' data-divider-theme='f'>
+<li>        
+Okay, so you start on the PLAYERS page. Decide which of you is going to read out the first word/phrase (you can go by the youngest, oldest, least number of sexual partners, a Princess-Bear-Hunter tournament, etc…). 
+</li>
+<li>
+Please remove any non-drinkers from the table, assign these people to the spectator area, then enter the names of each player that will be playing. This will be the order that the phone is passed around at the end of each round so try to enter the names in an order similar to their seating positions around the table (ex. clockwise for those     who live north of the equator, and counter-clockwise for those of you who put another shrimp on the barbie).
+</li>
+<li>
+Once all players are in the system there is no turning back. Player 1 gets the phone and clicks "Let's Play" to start off what could end up being a pretty sloppy night.     
+    </li>
+    <li>
+Player     1 reads the word/phrase that appears out loud to the other players and then passes the phone over to player 2.     </li>
+<li>
+    
+Player     2 is presented with 5 definitions to choose from. Player 2 selects and submits the one definition that they think Player 1 is likely to choose as the winner. If Player 2 is stalling, the other players and spectators are highly encouraged to engage in some heckling. They are also encouraged to find nearby items to throw at Player 2 (ex. beer nuts, plastic beer cups, a refrigerator, etc…). Once Player 2 has selected a definition and clicks submit, they pass the phone over to Player 3.     
+</li>
+<li>
+Player     3 then puts down the refrigerator and step #5 is repeated for them and then any other players playing the game.
+</li>
+<li>
+When all players have selected and submitted their definitions, the phone is passed back to Player 1. Player 1 then looks at the submitted definitions and is encouraged to make inappropriate remarks as long as they don't reveal any of the definitions. Player 1 then ranks the submitted definitions in order of favourite to least favourite. They do this by dragging and dropping the definitions to change their order.
+</li>
+<li>
+Player     1 then reads the game-provided real definition of the word/phrase and then proceeds to read the player-submitted definitions from least favourite to favourite.  This helps build suspense of who the winner is.
+</li>
+<li>
+If your definition is chosen as the favourite for that round, you're given a point, and you can assign a drink to one of the other players, like that guy across the table who pulled the Olympic sit-up prank on you back in college (Google "Olympic sit up", we dare you), or the girl next to him that cut your socks while you were passed out that one time and smeared peanut butter all over your toes.
+</li>
+<li>
+The phone is then passed on to Player 2, someone is a little more drunk than when the game started, and we start all over again from step #4 above.
+</li>
+<li>
+Continue until someone passes out.  This game is cray.
+</li>
+</ol>
+</p>
 		<input type="button" id="startButton" onClick="onStartClick()" value="Start Game">
   	</div><!-- /content -->
 	

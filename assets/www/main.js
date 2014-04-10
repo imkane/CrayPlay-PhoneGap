@@ -25,6 +25,7 @@ var deviceInfo = function() {
     document.getElementById("width").innerHTML = screen.width;
     document.getElementById("height").innerHTML = screen.height;
     document.getElementById("colorDepth").innerHTML = screen.colorDepth;
+	navigator.splashscreen.hide();
 };
 
 var getLocation = function() {

@@ -8,6 +8,7 @@ function populateDB(tx){
 	tx.executeSql('DROP TABLE IF EXISTS PLAYERANSWERS');
 	tx.executeSql('DROP TABLE IF EXISTS DEFINITIONS');
 	tx.executeSql('DROP TABLE IF EXISTS SETUPPARAMS');
+	//tx.executeSql('DROP TABLE IF EXISTS TERMS');
 	 	 
 	 //CREATE TABLES
 	tx.executeSql('CREATE TABLE IF NOT EXISTS WORDS (word_id INTEGER PRIMARY KEY UNIQUE, word_type INTEGER, word_text TEXT, word_realdef TEXT)');
@@ -17,7 +18,23 @@ function populateDB(tx){
 	tx.executeSql('CREATE TABLE IF NOT EXISTS PLAYERANSWERS (pa_id INTEGER PRIMARY KEY AUTOINCREMENT, g_id INTEGER, p_id INTEGER, word_id INTEGER, round_id INTEGER, def_id INTEGER, a_vote_count INTEGER, a_rank INTEGER)');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS DEFINITIONS (def_id INTEGER KEY UNIQUE, def_type INTEGER, def_text TEXT)');
 	tx.executeSql('CREATE TABLE IF NOT EXISTS SETUPPARAMS (setup_id INTEGER KEY UNIQUE, setup_text TEXT, setup_value TEXT)');
-   	 
+	tx.executeSql('CREATE TABLE IF NOT EXISTS TERMS (name TEXT, platform TEXT, uuid TEXT, accepted TEXT)');
+	console.log(window.device);
+	var device = window.device;
+   	/*if(typeof device!="undefined")
+	{
+		tx.executeSql('INSERT INTO TERMS (name, platform, uuid, accepted) VALUES ("'+device.name+'", "'+device.platform+'","'+device.uuid+'","no")');
+		var temp = 'Device Name: '     + device.name     + '<br />' + 
+		'Device PhoneGap: ' + device.phonegap + '<br />' + 
+		'Device Platform: ' + device.platform + '<br />' + 
+		'Device UUID: '     + device.uuid     + '<br />' + 
+		'Device Version: '  + device.version  + '<br />'; 
+		console.log(temp);
+	}
+	else
+	{
+		tx.executeSql('SELECT * FROM TERMS', [], querySuccess, errorCB);
+	}*/ 
    	 //CREATE WORDS
 	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (1,1,"Nerd","A foolish or contemptible person who lacks social skills or is boringly studious.")');
 	tx.executeSql('INSERT INTO WORDS (word_id, word_type, word_text, word_realdef) VALUES (2,1,"Geek","An unfashionable or socially inept person.")');
@@ -306,4 +323,33 @@ function getDBPlayerAnswerDBSuccess(tx, results) {
     for(var i=0; i<results.rows.length;i++){
 		//thePlayerAnswers.add(results.rows.item(i).p_id, currentQID, results.rows.item(i).def_id, currentGameID, currentRound, 0, 0);
     }
+}
+function addtermsuser(tx)
+{
+	tx.executeSql('INSERT INTO TERMS (name, platform, uuid, accepted) VALUES ("'+device.name+'", "'+device.platform+'","'+device.uuid+'","no")');
+}
+function upTerms(){
+	localStorage["termsAccepted"] = "yes";
+    /*var db = window.openDatabase("CrayPlay", "1.0", "CrayPlay DB", 1000000);
+    db.transaction(upTermsfnc, errorCB, successCB);*/
+}
+function upTermsfnc(tx)
+{
+	tx.executeSql('UPDATE TERMS set accepted="yes"');
+}
+var temp,temp2;
+function querySuccess(tx, results) {
+    console.log("Returned rows = " + results.rows.length);
+	console.log("Returned recordset = " + results.rows.item(0).name);
+	temp = results.rows;
+	temp2 = results;
+    if(results.rows.length==0)
+		tx.executeSql('INSERT INTO TERMS (name, platform, uuid, accepted) VALUES ("one", "platform","uuid","no")');
+	else
+	{
+		if(results.rows.item(0).accepted == "yes"){
+			$("#terms").remove();
+			$("body").pagecontainer("change","#mainmenu", {transition: "none"} );
+			}
+	}	
 }

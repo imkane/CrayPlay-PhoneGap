@@ -53,10 +53,10 @@ var ids = [];
 
 function init(){
     document.addEventListener("deviceready", startup);
+	checkTerms();
     initializeDB(errorCB, successCB);
 	queryDBQuestions(errorCB,successCB);
 	queryDBDefinitions(errorCB,successCB);
-	$("body").pagecontainer("change","#terms", {role: "dialog", transition: "none"} );
 }
 
 function startup(){
@@ -64,7 +64,14 @@ function startup(){
 }
 
 function onClick(){
+	sessionStorage.clear();
 	$("body").pagecontainer("change","#terms", {role: "dialog", transition: "none"} );
+}
+
+function getDrinks(){
+	console.log("I am working ... ");
+	console.log($("#drinks_count"));
+	$("body").pagecontainer("change","#drinks_count2", {transition: "slide"} );
 }
 
 function onStartClick(){
@@ -299,10 +306,33 @@ function resetPageVariables(stage_num)
 {
 	currentStage=stage_num;
 }
-function moveToNextPage(){
-	
+function moveToNextPage(calc){
+	console.log("before  currentStage => "+currentStage);
 	currentStage++;
-		
+	console.log("currentStage => "+currentStage);
+	if(typeof calc !="undefined"){ 
+		var cur_player = $("input[type='radio'][name='playerdrink']:checked").val();
+		if(typeof sessionStorage[cur_player] == "undefined" || isNaN(sessionStorage[cur_player])){
+			console.log("player not exist => "+sessionStorage[cur_player]);
+			sessionStorage[cur_player] = 1;
+			console.log(sessionStorage[cur_player]);
+			}
+		else{
+			console.log("player exist => "+sessionStorage[cur_player]);
+			sessionStorage[cur_player] = parseInt(sessionStorage[cur_player]) + 1;
+			console.log(sessionStorage[cur_player]);
+			}
+		$("#drinks_cnt_lists").html("");
+		console.log("ok thanks => "+$("#drinks_cnt_lists"));	
+		console.log("length => "+sessionStorage.length);
+		for(i=0;i<sessionStorage.length;i++){
+				var name = sessionStorage.key(i);
+				var val  = sessionStorage[name];
+				console.log("i = "+i+", name => "+name);
+				console.log("val => "+val);
+				$("#drinks_cnt_lists").append("<tr><td align='center' width='50%'>"+name+"</td><td align='center' width='50%'>"+val+"</td></tr>");
+			}
+		}	
     switch(currentStage)
     {
     	case 1:
@@ -343,12 +373,15 @@ function moveToNextPage(){
     	case 5:
     		$("body").pagecontainer("change","rank_answers.html", {transition: "none"} );
     		break;
-    	case 6:
+    	case 7:
     		$("body").pagecontainer("change","read_answers.html", {transition: "none"} );
     		break;
-    	case 7:
+    	case 6:
+			console.log("currentStage case 6=> "+currentStage);
     		$("body").pagecontainer("change","read_real_def.html", {transition: "none"} );
+			console.log("currentStage => after page load"+currentStage);
     		break;
+
     	case 8:
     		$("body").pagecontainer("change","read_winner.html", {transition: "none"} );
     		break;
@@ -420,42 +453,44 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
 			$("#currentvariables").append("<legend>Read the following out loud to the other players...</legend>");	
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
 			$("#currentvariables").append("</fieldset>");
 			$("#currentvariables").append("</div>");
 			break;
 		case 2:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
 			break;
 		case 3:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentPlayerName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
 			break;
 		case 5:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
 			break;
-		case 6:
-			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
-			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
-			break;
 		case 7:
+			console.log("7 and changed"+currentStage);
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
+			break;
+		case 6:
+			console.log("6 and changed"+currentStage);
+			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
+			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
 			break;
 		case 8:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentReaderName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
 			break;
 		case 9:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentWinnerName + "</label></center></li>");
 			$("#currentvariables").append("<li><label for='text-basic'>Re-define the following word or phase:</label></li>");
-			$("#currentvariables").append("<li><center><span style='font-size:large;'>\"" + currentQText + "\"</span></center></li>");
+			$("#currentvariables").append("<li><center><span style='font-size:28px;font-weight:bold'>\"" + currentQText + "\"</span></center></li>");
 			break;
 		case 10:
 			$("#currentvariables").append("<li><center><label for='text-basic'>" + currentWinnerName + "</label></center></li>");
@@ -543,7 +578,8 @@ function appendCurrentVariables(){
 			$("#content").append("<input type='button' id='submitDefinition' onClick='onRankAnswersSubmit()' value='Submit'/>");
 			$("#content").trigger("create");
 		break;
-		case 6:
+		case 7:
+			console.log("7 and changed");
 			$("#currentvariables").append("<li><label for='text-basic'><center>Read Definitions</label></center></li>");
 			$("#currentvariables").append("<legend>Read the re-definitions below out loud, ordered by favourite to least favourite</legend>");
 			$("#currentvariables").append("<li data-role='list-divider'>Answers</li>");
@@ -557,7 +593,8 @@ function appendCurrentVariables(){
 			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Continue'/>");
 			$("#content").trigger("create");
 			break;
-		case 7:	
+		case 6:	
+			console.log("6 and "+currentQRealText);
 			$("#currentvariables").append("<div data-role='fieldcontain'>");
 			$("#currentvariables").append("<fieldset data-role='controlgroup'>");	
 			$("#currentvariables").append("<legend>Read the real definition out loud, if the other players are interested:</legend>");
@@ -586,6 +623,7 @@ function appendCurrentVariables(){
 			$("#content").trigger("create");
 			break;
 		case 9:
+			$("#currentvariables").append("<a  href='main.html#drinks_count'  data-rel='dialog' data-role='button'  data-corners='true' data-theme='f' >View Drinks List</a>");
 			$("#currentvariables").append("<legend>Assign a drink:</legend>");
 			$("#currentvariables").append("<li><center>Choose which player takes a drink</center></li>");
 			$("#currentvariables").append("<div id='radio'>");
@@ -600,7 +638,7 @@ function appendCurrentVariables(){
 			$("#currentvariables").append("</div>");
 			$("#currentvariables").append("</ul>");
 			$("#currentvariables").listview("refresh");
-			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage()' value='Continue'/>");
+			$("#content").append("<input type='button' id='continueButton' onClick='moveToNextPage(\"count\")' value='Continue'/>");
 			$("#content").trigger("create");
 			break;
 		case 10:
@@ -657,3 +695,9 @@ function deleteChildren(obj) {
     });
 }
 
+function checkTerms(){
+	if(localStorage["termsAccepted"] == "yes"){
+			$("#terms").remove();
+			$("body").pagecontainer("change","#mainmenu", {transition: "none"} );
+			}
+	}

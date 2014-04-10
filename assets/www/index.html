@@ -14,7 +14,12 @@
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript">
-			window.location = "main.html";
+			if(localStorage["termsAccepted"] == "yes"){
+				console.log("I am fast now");
+				window.location = "main.html#mainmenu";
+			}
+			else
+				window.location = "main.html";
             app.initialize();
         </script>
     </body>

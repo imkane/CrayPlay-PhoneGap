@@ -29,7 +29,10 @@ public class CrayPlay extends DroidGap
     {
         super.onCreate(savedInstanceState);
         // Set by <content src="index.html" /> in config.xml
-        super.loadUrl(Config.getStartUrl());
+        //super.loadUrl(Config.getStartUrl());
+        super.setIntegerProperty("splashscreen", R.drawable.splash);
+        super.loadUrl(Config.getStartUrl(), 3000);
+
         //super.loadUrl("file:///android_asset/www/index.html")
     }
 }
